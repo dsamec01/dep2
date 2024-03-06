@@ -25,7 +25,7 @@ void initPametTlacitka(DETEKCE_HRANY *Ptr_hrana, bool pocHodnota) {
 
 void initZat(ZATEZOVATEL *Ptr_zat, int pocHodnotaPO, int pocHodnotaRO, int pocHodnotaKO) {
     Ptr_zat->zatPO = pocHodnotaPO; //jelikoz mam pointer musim predat pomoci sipek
-    Ptr_zat->zatRO = pocHodnotaRO; //to zda si pamatuji ze je tlacitko zmacknuto nebo ne nastavuji na pocHodnota (obecne je to nejaka pocatecni hodnota, ale ted je to 0)
+    Ptr_zat->zatRO = pocHodnotaRO; //zatezovatel na zacatku nastavuji na pocHodnota (obecne je to nejaka pocatecni hodnota, ale ted je to 0)
     Ptr_zat->zatKO = pocHodnotaKO;
 };
 
@@ -99,21 +99,21 @@ bool getPametTlacitkaOutput(DETEKCE_HRANY *Ptr_hrana){
 }
 
 
-void signalizaceLED(DETEKCE_HRANY *Ptr_hrana, int vystupOmezovace, ZATEZOVATEL *Ptr_zat){ 
-    if (Ptr_hrana ->hrana == 0){
+void signalizaceLED(DETEKCE_HRANY *Ptr_hrana, int vystupOmezovace, ZATEZOVATEL *Ptr_zat){ //do signalizace poslu strukturu zatezovatele, vystup z omezovace a hodnotu na zaklade ktere urcuji stav prepinace
+    if (Ptr_hrana ->hrana == 0){ //na zaklade stavu prepinace, pokud je v 0 tak ctu z dekoderu(kdy vystupOmezovace je prepoctena hodnota z dekoderu)
     setFpgaVxValue(vystupOmezovace);
-    Ptr_zat->zatPO=vystupOmezovace;
+    Ptr_zat->zatPO=vystupOmezovace; //prepoctenou hodnotu zatezovatele si ulozim do struktury
     }
-    if (Ptr_hrana ->hrana == 1){
-        int potenciometrValue = getPotentiometerValue();
+    if (Ptr_hrana ->hrana == 1){//na zaklade stavu prepinace, pokud je v 1 tak ctu z potenciometru
+        int potenciometrValue = getPotentiometerValue(); //ulozim si hodnotu z potenciometru do pomocne promenne
         if (potenciometrValue  > OMEZENI) { //pokud mam o neco vetsi nez je 2047 tak to oriznu
         potenciometrValue  = OMEZENI;
         } 
         if (potenciometrValue < -OMEZENI) { //pokud mam o neco mensi nez 2047, tak to oriznu
         potenciometrValue  = -OMEZENI;
         }
-        setFpgaVxValue(potenciometrValue);
-        Ptr_zat->zatRO=potenciometrValue;
+        setFpgaVxValue(potenciometrValue); //vyslednou hodnotu si rozsvitim LED
+        Ptr_zat->zatRO=potenciometrValue; //a zaroven si ji ulozim do struktury
     }  
 }
 

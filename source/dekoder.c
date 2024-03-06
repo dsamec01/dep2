@@ -167,7 +167,7 @@ char getDekoderSmeru(DEKODER *Ptr_dekoder){ //vezmu adresu struktury z dekoderu
     return Ptr_dekoder->smer; //a vratim hodnotu struktury
 }
 
-int getOmezovacDekoderu(DEKODER *Ptr_dekoder) { //vezmu hodnotu z rozmezi -127 az 127 a tu si prepoctu a vratim si ji
+int getPrepocetDekoderu(DEKODER *Ptr_dekoder) { //vezmu hodnotu z rozmezi -127 az 127 a tu si prepoctu a vratim si ji
     long prepocet =0;
     prepocet= Ptr_dekoder->smer; 
     prepocet = prepocet * OMEZENI; //vezmu hodnotu z dekoderu, prenasobim to konstantou, mam nejake velke cislo 

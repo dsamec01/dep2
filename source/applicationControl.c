@@ -81,7 +81,7 @@ void runApplication(void) {//je volanou kazdou 1ms v platformMainMK sem pisu moj
  //volani funkci na tlacitko S4
   runFiltr(&tlacitkoS4,getButtonS4());
   runPametTlacitka(&pametS4, getFiltrOutput(&tlacitkoS4));
-  signalizaceLED(&pametS4, getOmezovacDekoderu(&vystupDekoderu), &zat);//siganlizace led, funkce rozsvici ledky na zaklade nacteni dekoderu nebo potaku
+  signalizaceLED(&pametS4, getPrepocetDekoderu(&vystupDekoderu), &zat);//siganlizace led, funkce rozsvici ledky na zaklade nacteni dekoderu nebo potaku
  
  
   
