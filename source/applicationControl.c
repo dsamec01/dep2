@@ -70,9 +70,9 @@ void runApplication(void) {//je volanou kazdou 1ms v platformMainMK sem pisu moj
   setCoderLedB(getFiltrOutput(&dekoderStopaB)); //volam si funkci, ktera mi rozsviti led kdyz doslo k filtraci tlacitka na kanalu B
   //volani funkci na kvadraturní dekoder
   runDekoderSmeru(&vystupDekoderu, getFiltrOutput(&dekoderStopaA), getFiltrOutput(&dekoderStopaB));
-  setFpgaVxValue(getDekoderSmeru(&vystupDekoderu)); //siganlizace led, funkce rozsvici ledky na zaklade nacteni dekoderu
   runSignalizaceMaxDekoderu(&vystupDekoderu);
   runSignalizaceMinDekoderu(&vystupDekoderu);
+  //setFpgaVxValue(getDekoderSmeru(&vystupDekoderu)); //siganlizace led, funkce rozsvici ledky na zaklade nacteni dekoderu
  
  
   

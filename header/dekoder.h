@@ -16,8 +16,9 @@
     /* Section: Constants                                                         */
     /* ************************************************************************** */
     /* ************************************************************************** */
-    #define DEKODER_MAX 255 // konstanta 255 se kterou budu porovnavat jestli jsem se dopocital minima 
-    #define DEKODER_MIN 0 // kosntanta 0 se kterou budu porovnavat jestli jsem se dopocital maxima
+    #define DEKODER_MAX -127 // konstanta 255 se kterou budu porovnavat jestli jsem se dopocital minima 
+    #define DEKODER_MIN 127 // kosntanta 0 se kterou budu porovnavat jestli jsem se dopocital maxima
+    #define OMEZENI 2047
 
    
     // *****************************************************************************
@@ -27,8 +28,8 @@
     // *****************************************************************************
     typedef struct {
         /* Describe structure member. */
-        unsigned char stav; //hodnota 0 az 255 (vlastne vnitrni hodnota)
-        unsigned char smer; 
+        unsigned char stav;
+        char smer; //hodnota -127 az 127
                    } DEKODER;
         
     enum{S0,S1,S2,S3,S4};
@@ -38,11 +39,11 @@
     // *****************************************************************************
     // *****************************************************************************
     //musim vtahnout prototypy funkci, abych je pomoci toho vtahl do mainu (applicationControl.c)
-    void initDekoder(DEKODER *Ptr_dekoder, int pocHodnota);
+    void initDekoder(DEKODER *Ptr_dekoder, char pocHodnota);
     void runDekoderSmeru(DEKODER *Ptr_dekoder, bool kanalA, bool kanalB);
     void runSignalizaceMaxDekoderu(DEKODER *Ptr_dekoder);
     void runSignalizaceMinDekoderu(DEKODER *Ptr_dekoder);
-    unsigned char getDekoderSmeru(DEKODER *Ptr_dekoder); //vraci to hodnotu 0-255
+    char getDekoderSmeru(DEKODER *Ptr_dekoder); //vraci to hodnotu -127 az 127
 
 /* *****************************************************************************
  End of File

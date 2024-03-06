@@ -14,12 +14,12 @@
 /* ************************************************************************** */
 /* ************************************************************************** */
 //inicializace struktury
-  void initDekoder(DEKODER *Ptr_dekoder, int pocHodnota){
+  void initDekoder(DEKODER *Ptr_dekoder, char pocHodnota){
     Ptr_dekoder->stav=0; //jelikoz mam pointer musim predat pomoci sipek
     Ptr_dekoder->smer=pocHodnota; //smer nastavuji na pocHodnota (obecne je to nejaka pocatecni hodnota, ale ted je to 0)
    };
 
-void runDekoderSmeru(DEKODER *Ptr_dekoder, bool kanalA, bool kanalB){
+void runDekoderSmeru(DEKODER *Ptr_dekoder, bool kanalA, bool kanalB){ //mam celou dobu rozmezi -127 az 127
     //pri vbehu do funkce se mi zalozi pointer ktery bude odkazovat na danou strukturu, ta obsahuje info o stavu a smeru
    //zaroven do funkce budu posilat vyfilrovane hodnoty z kanaluA a kanaluB na zaklade kterych budu inkremetovat/dekrementoavt
     char stav_next = S0; //na pocatku budu ve stavu 0
@@ -163,9 +163,24 @@ void runSignalizaceMinDekoderu(DEKODER *Ptr_dekoder){
 }
 
 //funkce pro predani - nedela nic jineho nez ze mi vraci hodnotu z funkce dekoderSmeru (hodnotu do funkce predam a tu stejnou hodnotu mi to vrati)
-unsigned char getDekoderSmeru(DEKODER *Ptr_dekoder){ //vezmu adresu struktury z dekoderu
+char getDekoderSmeru(DEKODER *Ptr_dekoder){ //vezmu adresu struktury z dekoderu
     return Ptr_dekoder->smer; //a vratim hodnotu struktury
 }
+
+int runOmezovacDekoderu(DEKODER *Ptr_dekoder) { //vezmu hodnotu z rozmezi -127 az 127 a tu si prepoctu a vratim si ji
+    long prepocet = Ptr_dekoder->smer; 
+    prepocet = prepocet * OMEZENI; //vezmu hodnotu z dekoderu, prenasobim to konstantou, mam nejake velke cislo 
+    prepocet = prepocet/DEKODER_MAX; //podelim zpet abych byl v rozmezi 2047
+    if (prepocet > OMEZENI) { //pokud mam o neco vetsi nez je 2047 tak to oriznu
+        prepocet = OMEZENI;
+    } 
+    if (prepocet < -OMEZENI) { //pokud mam o neco mensi nez 2047, tak to oriznu
+        prepocet = -OMEZENI;
+    }
+
+    return prepocet; //vraci mi to hodnotu v rozsahu -2047 az 2047
+}
+
 
 /* ************************************************************************** */
 /* ************************************************************************** */
