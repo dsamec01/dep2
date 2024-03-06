@@ -57,17 +57,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=source/applicationControl.c source/platformMainMK.c source/filtrace.c source/dekoder.c
+SOURCEFILES_QUOTED_IF_SPACED=source/applicationControl.c source/platformMainMK.c source/filtrace.c source/dekoder.c source/pamet.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/source/applicationControl.o ${OBJECTDIR}/source/platformMainMK.o ${OBJECTDIR}/source/filtrace.o ${OBJECTDIR}/source/dekoder.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/source/applicationControl.o.d ${OBJECTDIR}/source/platformMainMK.o.d ${OBJECTDIR}/source/filtrace.o.d ${OBJECTDIR}/source/dekoder.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/source/applicationControl.o ${OBJECTDIR}/source/platformMainMK.o ${OBJECTDIR}/source/filtrace.o ${OBJECTDIR}/source/dekoder.o ${OBJECTDIR}/source/pamet.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/source/applicationControl.o.d ${OBJECTDIR}/source/platformMainMK.o.d ${OBJECTDIR}/source/filtrace.o.d ${OBJECTDIR}/source/dekoder.o.d ${OBJECTDIR}/source/pamet.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/source/applicationControl.o ${OBJECTDIR}/source/platformMainMK.o ${OBJECTDIR}/source/filtrace.o ${OBJECTDIR}/source/dekoder.o
+OBJECTFILES=${OBJECTDIR}/source/applicationControl.o ${OBJECTDIR}/source/platformMainMK.o ${OBJECTDIR}/source/filtrace.o ${OBJECTDIR}/source/dekoder.o ${OBJECTDIR}/source/pamet.o
 
 # Source Files
-SOURCEFILES=source/applicationControl.c source/platformMainMK.c source/filtrace.c source/dekoder.c
+SOURCEFILES=source/applicationControl.c source/platformMainMK.c source/filtrace.c source/dekoder.c source/pamet.c
 
 
 CFLAGS=
@@ -130,6 +130,12 @@ ${OBJECTDIR}/source/dekoder.o: source/dekoder.c  nbproject/Makefile-${CND_CONF}.
 	@${RM} ${OBJECTDIR}/source/dekoder.o 
 	@${FIXDEPS} "${OBJECTDIR}/source/dekoder.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/source/dekoder.o.d" -o ${OBJECTDIR}/source/dekoder.o source/dekoder.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD) 
 	
+${OBJECTDIR}/source/pamet.o: source/pamet.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/source" 
+	@${RM} ${OBJECTDIR}/source/pamet.o.d 
+	@${RM} ${OBJECTDIR}/source/pamet.o 
+	@${FIXDEPS} "${OBJECTDIR}/source/pamet.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/source/pamet.o.d" -o ${OBJECTDIR}/source/pamet.o source/pamet.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD) 
+	
 else
 ${OBJECTDIR}/source/applicationControl.o: source/applicationControl.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/source" 
@@ -154,6 +160,12 @@ ${OBJECTDIR}/source/dekoder.o: source/dekoder.c  nbproject/Makefile-${CND_CONF}.
 	@${RM} ${OBJECTDIR}/source/dekoder.o.d 
 	@${RM} ${OBJECTDIR}/source/dekoder.o 
 	@${FIXDEPS} "${OBJECTDIR}/source/dekoder.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/source/dekoder.o.d" -o ${OBJECTDIR}/source/dekoder.o source/dekoder.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD) 
+	
+${OBJECTDIR}/source/pamet.o: source/pamet.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/source" 
+	@${RM} ${OBJECTDIR}/source/pamet.o.d 
+	@${RM} ${OBJECTDIR}/source/pamet.o 
+	@${FIXDEPS} "${OBJECTDIR}/source/pamet.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/source/pamet.o.d" -o ${OBJECTDIR}/source/pamet.o source/pamet.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD) 
 	
 endif
 

@@ -44,7 +44,7 @@
     void runSignalizaceMaxDekoderu(DEKODER *Ptr_dekoder);
     void runSignalizaceMinDekoderu(DEKODER *Ptr_dekoder);
     char getDekoderSmeru(DEKODER *Ptr_dekoder); //vraci to hodnotu -127 az 127
-    int runOmezovacDekoderu(DEKODER *Ptr_dekoder);
+    int getOmezovacDekoderu(DEKODER *Ptr_dekoder); //vraci hodnotu -2047 az 2047
 
 /* *****************************************************************************
  End of File

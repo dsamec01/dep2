@@ -143,7 +143,7 @@ void runDekoderSmeru(DEKODER *Ptr_dekoder, bool kanalA, bool kanalB){ //mam celo
 
 }//funkce 
 
-//pokud hoddnota smeru je rovna 255 sviti limit maxima
+//pokud hoddnota smeru je rovna 127 sviti limit maxima
 void runSignalizaceMaxDekoderu(DEKODER *Ptr_dekoder){
     if(Ptr_dekoder->smer == DEKODER_MAX ){
         setCoderLedHL(1);
@@ -152,7 +152,7 @@ void runSignalizaceMaxDekoderu(DEKODER *Ptr_dekoder){
         setCoderLedHL(0);
     }
 }
-//pokud hoddnota smeru je rovna 0 sviti limit minima
+//pokud hoddnota smeru je rovna -127 sviti limit minima
 void runSignalizaceMinDekoderu(DEKODER *Ptr_dekoder){
     if(Ptr_dekoder->smer == DEKODER_MIN ){
         setCoderLedLL(1);
@@ -167,18 +167,19 @@ char getDekoderSmeru(DEKODER *Ptr_dekoder){ //vezmu adresu struktury z dekoderu
     return Ptr_dekoder->smer; //a vratim hodnotu struktury
 }
 
-int runOmezovacDekoderu(DEKODER *Ptr_dekoder) { //vezmu hodnotu z rozmezi -127 az 127 a tu si prepoctu a vratim si ji
-    long prepocet = Ptr_dekoder->smer; 
+int getOmezovacDekoderu(DEKODER *Ptr_dekoder) { //vezmu hodnotu z rozmezi -127 az 127 a tu si prepoctu a vratim si ji
+    long prepocet =0;
+    prepocet= Ptr_dekoder->smer; 
     prepocet = prepocet * OMEZENI; //vezmu hodnotu z dekoderu, prenasobim to konstantou, mam nejake velke cislo 
     prepocet = prepocet/DEKODER_MAX; //podelim zpet abych byl v rozmezi 2047
-    if (prepocet > OMEZENI) { //pokud mam o neco vetsi nez je 2047 tak to oriznu
-        prepocet = OMEZENI;
-    } 
-    if (prepocet < -OMEZENI) { //pokud mam o neco mensi nez 2047, tak to oriznu
-        prepocet = -OMEZENI;
-    }
-
-    return prepocet; //vraci mi to hodnotu v rozsahu -2047 az 2047
+        if (prepocet > OMEZENI) { //pokud mam o neco vetsi nez je 2047 tak to oriznu
+            prepocet = OMEZENI;
+        } 
+        if (prepocet < -OMEZENI) { //pokud mam o neco mensi nez 2047, tak to oriznu
+            prepocet = -OMEZENI;
+        }
+    int tmpPrepocet = prepocet;
+    return tmpPrepocet; //vraci mi to hodnotu v rozsahu -2047 az 2047
 }
 
 

@@ -8,6 +8,7 @@
       <itemPath>header/configCPU32mk.h</itemPath>
       <itemPath>header/filtrace.h</itemPath>
       <itemPath>header/dekoder.h</itemPath>
+      <itemPath>header/pamet.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -20,6 +21,7 @@
       <itemPath>source/platformMainMK.c</itemPath>
       <itemPath>source/filtrace.c</itemPath>
       <itemPath>source/dekoder.c</itemPath>
+      <itemPath>source/pamet.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
