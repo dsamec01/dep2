@@ -31,19 +31,18 @@ void initZat(ZATEZOVATEL *Ptr_zat, int pocHodnotaPO, int pocHodnotaRO, int pocHo
 
 void runPametTlacitka(DETEKCE_HRANY *Ptr_hrana, bool tlacitkozmacknuto) //vstupem je jednak adresa struktury kde drzim stav a informaci o tom zda mi prisla hrana nebo ne a druhak je to informace o tom zda mam tlacitko zmackle nebo nikoliv
 {
-char stavnext = S0;
 switch(Ptr_hrana->stav)
 	{
 	case S0:
 		{
 			if(tlacitkozmacknuto ==FALSE) //pokud se tlacitko nezmacklo tak stav next bude S0
 				{
-				stavnext = S0;		
+				Ptr_hrana->stav = S0;		
 
 				}
 			else
 				{
-				stavnext = S1;
+				Ptr_hrana->stav = S1;
 				Ptr_hrana ->hrana = TRUE; //pokud zmacknu tlacitko detekovala se hrana (tlacitko umozni prepnuti prepinace)
 				}
 			break;
@@ -52,12 +51,12 @@ switch(Ptr_hrana->stav)
 		{
 			if(tlacitkozmacknuto ==TRUE)
 				{
-				stavnext = S1;		
+				Ptr_hrana->stav = S1;		
 				Ptr_hrana ->hrana = TRUE; //pokud mam tlacitko zmackly furt tam mam tu predchozi hranu (prepinac je preplej, furt tam tam tu predchozi detekovanou nabeznou hranu)
 				}
 			else
 				{
-				stavnext = S2; //pokud tlacitko pustim jdu do stavu S2 (prepinac je stale preplej, furt tam tam tu predchozi detekovanou nabeznou hranu)
+				Ptr_hrana->stav = S2; //pokud tlacitko pustim jdu do stavu S2 (prepinac je stale preplej, furt tam tam tu predchozi detekovanou nabeznou hranu)
 				
 				}
 			break;
@@ -66,12 +65,12 @@ switch(Ptr_hrana->stav)
 		{
 			if(tlacitkozmacknuto ==FALSE)
 				{
-				stavnext = S2;		//pokud je tlacitko nezmacky nic se nedeje (prepinac je stale preplej, mam tam stale tu predchozi detekovanou nabeznou hranu)
+				Ptr_hrana->stav = S2;		//pokud je tlacitko nezmacky nic se nedeje (prepinac je stale preplej, mam tam stale tu predchozi detekovanou nabeznou hranu)
 				
 				}
 			else
 				{
-				stavnext = S3; //pokud tlacitko zmacknu znovu jdu do s3 a hrana jde dolu (prepinac se prepne zpet)
+				Ptr_hrana->stav = S3; //pokud tlacitko zmacknu znovu jdu do s3 a hrana jde dolu (prepinac se prepne zpet)
 				Ptr_hrana ->hrana = FALSE;
 				}
 			break;
@@ -80,18 +79,18 @@ switch(Ptr_hrana->stav)
 		{
 			if(tlacitkozmacknuto ==TRUE)
 				{
-				stavnext = S3;		
+				Ptr_hrana->stav = S3;		
 				Ptr_hrana ->hrana = FALSE; //pokud tlacitko drzim, tak hrana je furt dole (prepinac je v puvodnim stavu, mam stale predchozi detekovanou sestupnou hranu)
 				}
 			else
 				{
-				stavnext = S0; //pokud tlacitko pustim jdu na zacatek (prepinac je v puvodnim stavu, mam stale predchozi detekovanou sestupnou hranu)
+				Ptr_hrana->stav = S0; //pokud tlacitko pustim jdu na zacatek (prepinac je v puvodnim stavu, mam stale predchozi detekovanou sestupnou hranu)
 				
 				}
 			break;
 		}
 	}
-Ptr_hrana->stav=stavnext; //predavam predchozi vystup automatu na vstup
+Ptr_hrana->stav; //predavam predchozi vystup automatu na vstup
 }
 
 bool getPametTlacitkaOutput(DETEKCE_HRANY *Ptr_hrana){
@@ -99,10 +98,10 @@ bool getPametTlacitkaOutput(DETEKCE_HRANY *Ptr_hrana){
 }
 
 
-void signalizaceLED(DETEKCE_HRANY *Ptr_hrana, int vystupOmezovace, ZATEZOVATEL *Ptr_zat){ //do signalizace poslu strukturu zatezovatele, vystup z omezovace a hodnotu na zaklade ktere urcuji stav prepinace
+void signalizaceLED(DETEKCE_HRANY *Ptr_hrana, int prepoctenyDekoder, ZATEZOVATEL *Ptr_zat){ //do signalizace poslu strukturu zatezovatele, vystup z omezovace a hodnotu na zaklade ktere urcuji stav prepinace
     if (Ptr_hrana ->hrana == 0){ //na zaklade stavu prepinace, pokud je v 0 tak ctu z dekoderu(kdy vystupOmezovace je prepoctena hodnota z dekoderu)
-    setFpgaVxValue(vystupOmezovace);
-    Ptr_zat->zatPO=vystupOmezovace; //prepoctenou hodnotu zatezovatele si ulozim do struktury
+    setFpgaVxValue(prepoctenyDekoder);
+    Ptr_zat->zatPO=prepoctenyDekoder; //prepoctenou hodnotu zatezovatele si ulozim do struktury
     }
     if (Ptr_hrana ->hrana == 1){//na zaklade stavu prepinace, pokud je v 1 tak ctu z potenciometru
         int potenciometrValue = getPotentiometerValue(); //ulozim si hodnotu z potenciometru do pomocne promenne
