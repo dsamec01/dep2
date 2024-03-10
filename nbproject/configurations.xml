@@ -9,6 +9,7 @@
       <itemPath>header/filtrace.h</itemPath>
       <itemPath>header/dekoder.h</itemPath>
       <itemPath>header/pamet.h</itemPath>
+      <itemPath>header/PWM.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -22,6 +23,7 @@
       <itemPath>source/filtrace.c</itemPath>
       <itemPath>source/dekoder.c</itemPath>
       <itemPath>source/pamet.c</itemPath>
+      <itemPath>source/PWM.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
