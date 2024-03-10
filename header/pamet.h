@@ -22,9 +22,9 @@ bool hrana; //indikuje mi to zda prisla hrana a tlacitko je tak v 1 nebo v 0 (tu
 }DETEKCE_HRANY;
 
 typedef struct{ //definuji si strukturu do ktere budu ukladat zatezovatele z dekoderu, monitoru a potaku
-    int zatPO;
-    int zatRO;
-    int zatKO;
+    int zatPO; //zatezovatel od potaku
+    int zatRO; //zatezovatel od dekoderu
+    int zatKO; //zatezovatel od monitoru
 }ZATEZOVATEL;
 
 
@@ -34,6 +34,7 @@ void initPametTlacitka(DETEKCE_HRANY *Ptr_hrana, bool pocHodnota);
 void runPametTlacitka(DETEKCE_HRANY *Ptr_hrana, bool tlacitkozmacknuto);
 bool getPametTlacitkaOutput(DETEKCE_HRANY *Ptr_hrana);
 void signalizaceLED(DETEKCE_HRANY *Ptr_hrana, int prepoctenyDekoder, ZATEZOVATEL *Ptr_zat);
+int getZatezovatel(ZATEZOVATEL *Ptr_zat, DETEKCE_HRANY *Ptr_hrana);
     
 
   

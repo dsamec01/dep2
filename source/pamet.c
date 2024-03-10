@@ -116,6 +116,16 @@ void signalizaceLED(DETEKCE_HRANY *Ptr_hrana, int prepoctenyDekoder, ZATEZOVATEL
     }  
 }
 
+int getZatezovatel(ZATEZOVATEL *Ptr_zat, DETEKCE_HRANY *Ptr_hrana){ //dostanu hodnotu zatezovatele
+    if (Ptr_hrana ->hrana == 0){ //na zaklade toho v jakem stavu mam prepinac, tak podle toho mi to vraci hodnotu zatezovatele pro PWM
+        return Ptr_zat->zatPO;
+    }
+    
+    if (Ptr_hrana ->hrana == 1){
+         return Ptr_zat->zatRO;
+    }
+
+}//jeste doplnit rozhodovani na zaklade hodnoty z modulu
 
 
 /* *****************************************************************************

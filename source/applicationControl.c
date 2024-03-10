@@ -23,6 +23,7 @@
 #include "./../header/filtrace.h"
 #include "./../header/dekoder.h"
 #include "./../header/pamet.h"
+#include "./../header/PWM.h"
 
 
 //-- platform Function prototypes are in "platrformDEP32mk" ---------------------
@@ -61,7 +62,7 @@ void configApplication(void){//------------------------------------------------
    initDekoder(&vystupDekoderu, 0); //volam si funkci, kdy vstupem je adresa struktury a zaroven si nastavim pocatecni hodnotu
    initPametTlacitka(&pametS4, 0);
    initZat(&zat, 0, 0, 0); //inicializace struktury obsahujici zatezovatele
-   
+   initPWM(); //nastavim periferie pro PWM
   
 }// configApplication() END 
 
@@ -82,8 +83,9 @@ void runApplication(void) {//je volanou kazdou 1ms v platformMainMK sem pisu moj
   runFiltr(&tlacitkoS4,getButtonS4());
   runPametTlacitka(&pametS4, getFiltrOutput(&tlacitkoS4));
   signalizaceLED(&pametS4, getPrepocetDekoderu(&vystupDekoderu), &zat);//siganlizace led, funkce rozsvici ledky na zaklade nacteni dekoderu nebo potaku
- 
- 
+  
+ //volani funkci pro PWM
+ runPWMPrepoctiAPredej(getZatezovatel(&zat, &pametS4)); //do funkce poslu hodnotu zatezovatele na zaklade prepinace
   
   
   

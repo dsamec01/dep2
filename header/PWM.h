@@ -12,7 +12,9 @@
     /* ************************************************************************** */
     /* ************************************************************************** */
 #define timeis100mikro 6000 //za tolik tiku nacitam periodu 100mikro
-
+#define PERIOD_MIN 300
+#define PERIOD_PUL 3000
+#define ZAT_MIN -2047
 
 
     // *****************************************************************************
@@ -29,7 +31,10 @@
     // Section: Interface Functions
     // *****************************************************************************
     // *****************************************************************************
-
+//prototypy funkci
+void initPWM(void);
+void runPWMPrepoctiAPredej(int zatezovatel);
+int* getPtrCasJednaPrenos();
 
 
 
