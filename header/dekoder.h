@@ -16,8 +16,8 @@
     /* Section: Constants                                                         */
     /* ************************************************************************** */
     /* ************************************************************************** */
-    #define DEKODER_MAX -127 // konstanta 255 se kterou budu porovnavat jestli jsem se dopocital minima 
-    #define DEKODER_MIN 127 // kosntanta 0 se kterou budu porovnavat jestli jsem se dopocital maxima
+    #define DEKODER_MAX 127 // konstanta 255 se kterou budu porovnavat jestli jsem se dopocital minima 
+    #define DEKODER_MIN -127 // kosntanta 0 se kterou budu porovnavat jestli jsem se dopocital maxima
     #define OMEZENI 2047
 
    

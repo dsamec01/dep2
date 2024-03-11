@@ -51,8 +51,8 @@ void initPWM(void){
     OC1CONbits.OCFLT=0; //Nepouzivam
     OC1CONbits.OCTSEL=0; //Timerx je zdrojem casovace
     OC1CONbits.OCM = 0b110; //Pouzivam PWM mode 
-    OC1R = PERIOD_PUL; //nastavim compare registr, abych mel stredni hodnotu na zacatku nulovou (aby se mi motor netocil ani na jednu stranu)
-    OC1RS = PERIOD_PUL; //nastavim druhy Compare registr abych mel stredni hodnotu na zacatku nulovou (aby se mi motor netocil ani na jednu stranu)
+    OC1R = PERIOD_PUL; //nastavim compare registr, abych mel stredni hodnotu na zacatku nulovou (aby se mi motor netocil ani na jednu stranu) -> tato hodnota tam vlastne bude na zacatku
+    OC1RS = PERIOD_PUL; //nastavim druhy Compare registr na nejakou hodnotu, ale je to jedno. Prepise se v prvnim cyklu
     
     //na konci kdyz mam inicializaci, poustim casovac a compare jednotku
     T4CONSET=_T4CON_ON_MASK; //pustim timer
@@ -63,7 +63,7 @@ void initPWM(void){
 
 void __ISR(_TIMER_4_VECTOR, IPL4SOFT) T4_IntHandler(void){ //casovac nacita jednu periodu, vyvola preruseni
  //v preruseni mu reknu jak dlouho ma byt v 1 na zaklade prepoctu, ktery si udelam v mainu a hodim FLAG do 0
-    //OC1R = 0; //OC1R v PWM potom vubec nenastavuji, automaticky se do nej predava //popis viz 16.3.3 - po inicializaci se z OC1R stava read-only
+    //OC1R v PWM potom vubec nenastavuji, automaticky se do nej predava //popis viz 16.3.3 - po inicializaci se z OC1R stava read-only
     OC1RS = casJednaPrenos; //funguje to tak, ze ja to poslu do OC1RS, pak se mi to presune do OC1R, ten mi nastavi 1 a po nacitani patricneho zatezovatele mi to hodi do 0
     IFS0CLR = _IFS0_T4IF_MASK;
 } 
@@ -74,10 +74,10 @@ int* getPtrCasJednaPrenos(){ //predam pointer na int
 
 void runPWMPrepoctiAPredej(int zatezovatel){
     int casJedna = 0;
-    casJedna = ((PERIOD_MIN - PERIOD_PUL)/ZAT_MIN)*zatezovatel + 3000;
-    IEC0CLR = _IEC0_T4IE_MASK;
-    casJednaPrenos = casJedna;
-    IEC0SET = _IEC0_T4IE_MASK;
+    casJedna = ((PERIOD_MIN - PERIOD_PUL)/ZAT_MIN)*zatezovatel + 3000; //prepocitam na tiky kdy ma byt v 1
+    IEC0CLR = _IEC0_T4IE_MASK; //zakazu Interrupt
+    casJednaPrenos = casJedna; //predam do globalni promenne
+    IEC0SET = _IEC0_T4IE_MASK; //povolim Interrupt
 }
 
 

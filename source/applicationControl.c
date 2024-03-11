@@ -86,7 +86,7 @@ void runApplication(void) {//je volanou kazdou 1ms v platformMainMK sem pisu moj
   
  //volani funkci pro PWM
  runPWMPrepoctiAPredej(getZatezovatel(&zat, &pametS4)); //do funkce poslu hodnotu zatezovatele na zaklade prepinace
-  
+ setTestPinIRCAasPwmOutput();//kontrola vystupu PWM 
   
   
   
