@@ -105,13 +105,14 @@ void signalizaceLED(DETEKCE_HRANY *Ptr_hrana, int prepoctenyDekoder, ZATEZOVATEL
     }
     if (Ptr_hrana ->hrana == 1){//na zaklade stavu prepinace, pokud je v 1 tak ctu z potenciometru
         int potenciometrValue = getPotentiometerValue(); //ulozim si hodnotu z potenciometru do pomocne promenne
-        if (potenciometrValue  > OMEZENI) { //pokud mam o neco vetsi nez je 2047 tak to oriznu
-        potenciometrValue  = OMEZENI; 
+        if (potenciometrValue  > OMEZENI_ADC) { //pokud mam o neco vetsi nez je 2047 tak to oriznu
+        potenciometrValue  = OMEZENI_ADC; 
         } 
-        if (potenciometrValue < -OMEZENI) { //pokud mam o neco mensi nez 2047, tak to oriznu
-        potenciometrValue  = -OMEZENI;
+        if (potenciometrValue < -OMEZENI_ADC) { //pokud mam o neco mensi nez 2047, tak to oriznu
+        potenciometrValue  = -OMEZENI_ADC;
         }
-        //potenciometrValue = potenciometrValue*(2047/OMEZENI);
+        potenciometrValue = potenciometrValue*PREPOCET_ADC; //hodnotu z rozmezi 1960 si vynasobim 2047
+        potenciometrValue = potenciometrValue/OMEZENI_ADC; //hodnotu nyni podelim 1960 abych byl opet v rozsahu 2047
         setFpgaVxValue(potenciometrValue); //vyslednou hodnotu si rozsvitim LED
         Ptr_zat->zatRO=potenciometrValue; //a zaroven si ji ulozim do struktury
     }  
