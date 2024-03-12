@@ -3,7 +3,8 @@
 
 //included files
 #include <stdbool.h>
-
+#define OMEZENI_ADC 1960 //kvuli šumu musim mit na potaku mensi hodnotu nez 2047 -> musim jakoby doraz posunout
+#define PREPOCET_ADC 2047 //pomoci OMEZENI_ADC a PREPOCTU_ADC dostanu hodnoty z rozsahu -2047 az 2047
 
 /* ************************************************************************** */
     /* ************************************************************************** */

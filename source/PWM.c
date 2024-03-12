@@ -73,8 +73,9 @@ int* getPtrCasJednaPrenos(){ //predam pointer na int
 } //pracuji s tim jako s pointerem, je to pointer, kdyz to budu predavat funkci, tak musi cekat pointer, ne hdonotu
 
 void runPWMPrepoctiAPredej(int zatezovatel){
-    int casJedna = 0;
-    casJedna = ((PERIOD_MIN - PERIOD_PUL)/ZAT_MIN)*zatezovatel + 3000; //prepocitam na tiky kdy ma byt v 1
+    long casJedna = 0;
+    casJedna = (PERIOD_MIN - PERIOD_PUL)*zatezovatel; //prepocitam na tiky kdy ma byt v 1
+    casJedna=casJedna/ZAT_MIN+PERIOD_PUL; //stale prepocet
     IEC0CLR = _IEC0_T4IE_MASK; //zakazu Interrupt
     casJednaPrenos = casJedna; //predam do globalni promenne
     IEC0SET = _IEC0_T4IE_MASK; //povolim Interrupt
