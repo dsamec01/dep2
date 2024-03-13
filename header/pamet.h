@@ -35,7 +35,7 @@ void initPametTlacitka(DETEKCE_HRANY *Ptr_hrana, bool pocHodnota);
 void runPametTlacitka(DETEKCE_HRANY *Ptr_hrana, bool tlacitkozmacknuto);
 bool getPametTlacitkaOutput(DETEKCE_HRANY *Ptr_hrana);
 void signalizaceLED(DETEKCE_HRANY *Ptr_hrana, int prepoctenyDekoder, ZATEZOVATEL *Ptr_zat);
-int getZatezovatel(ZATEZOVATEL *Ptr_zat, DETEKCE_HRANY *Ptr_hrana);
+int getZatezovatel(ZATEZOVATEL *Ptr_zat, DETEKCE_HRANY *Ptr_hrana, bool *Ptr_prepinac);
     
 
   

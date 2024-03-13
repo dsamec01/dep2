@@ -57,17 +57,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=source/applicationControl.c source/platformMainMK.c source/filtrace.c source/dekoder.c source/pamet.c source/PWM.c
+SOURCEFILES_QUOTED_IF_SPACED=source/applicationControl.c source/platformMainMK.c source/filtrace.c source/dekoder.c source/pamet.c source/PWM.c source/RTM_monitor.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/source/applicationControl.o ${OBJECTDIR}/source/platformMainMK.o ${OBJECTDIR}/source/filtrace.o ${OBJECTDIR}/source/dekoder.o ${OBJECTDIR}/source/pamet.o ${OBJECTDIR}/source/PWM.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/source/applicationControl.o.d ${OBJECTDIR}/source/platformMainMK.o.d ${OBJECTDIR}/source/filtrace.o.d ${OBJECTDIR}/source/dekoder.o.d ${OBJECTDIR}/source/pamet.o.d ${OBJECTDIR}/source/PWM.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/source/applicationControl.o ${OBJECTDIR}/source/platformMainMK.o ${OBJECTDIR}/source/filtrace.o ${OBJECTDIR}/source/dekoder.o ${OBJECTDIR}/source/pamet.o ${OBJECTDIR}/source/PWM.o ${OBJECTDIR}/source/RTM_monitor.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/source/applicationControl.o.d ${OBJECTDIR}/source/platformMainMK.o.d ${OBJECTDIR}/source/filtrace.o.d ${OBJECTDIR}/source/dekoder.o.d ${OBJECTDIR}/source/pamet.o.d ${OBJECTDIR}/source/PWM.o.d ${OBJECTDIR}/source/RTM_monitor.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/source/applicationControl.o ${OBJECTDIR}/source/platformMainMK.o ${OBJECTDIR}/source/filtrace.o ${OBJECTDIR}/source/dekoder.o ${OBJECTDIR}/source/pamet.o ${OBJECTDIR}/source/PWM.o
+OBJECTFILES=${OBJECTDIR}/source/applicationControl.o ${OBJECTDIR}/source/platformMainMK.o ${OBJECTDIR}/source/filtrace.o ${OBJECTDIR}/source/dekoder.o ${OBJECTDIR}/source/pamet.o ${OBJECTDIR}/source/PWM.o ${OBJECTDIR}/source/RTM_monitor.o
 
 # Source Files
-SOURCEFILES=source/applicationControl.c source/platformMainMK.c source/filtrace.c source/dekoder.c source/pamet.c source/PWM.c
+SOURCEFILES=source/applicationControl.c source/platformMainMK.c source/filtrace.c source/dekoder.c source/pamet.c source/PWM.c source/RTM_monitor.c
 
 
 CFLAGS=
@@ -142,6 +142,12 @@ ${OBJECTDIR}/source/PWM.o: source/PWM.c  nbproject/Makefile-${CND_CONF}.mk
 	@${RM} ${OBJECTDIR}/source/PWM.o 
 	@${FIXDEPS} "${OBJECTDIR}/source/PWM.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/source/PWM.o.d" -o ${OBJECTDIR}/source/PWM.o source/PWM.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD) 
 	
+${OBJECTDIR}/source/RTM_monitor.o: source/RTM_monitor.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/source" 
+	@${RM} ${OBJECTDIR}/source/RTM_monitor.o.d 
+	@${RM} ${OBJECTDIR}/source/RTM_monitor.o 
+	@${FIXDEPS} "${OBJECTDIR}/source/RTM_monitor.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/source/RTM_monitor.o.d" -o ${OBJECTDIR}/source/RTM_monitor.o source/RTM_monitor.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD) 
+	
 else
 ${OBJECTDIR}/source/applicationControl.o: source/applicationControl.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/source" 
@@ -178,6 +184,12 @@ ${OBJECTDIR}/source/PWM.o: source/PWM.c  nbproject/Makefile-${CND_CONF}.mk
 	@${RM} ${OBJECTDIR}/source/PWM.o.d 
 	@${RM} ${OBJECTDIR}/source/PWM.o 
 	@${FIXDEPS} "${OBJECTDIR}/source/PWM.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/source/PWM.o.d" -o ${OBJECTDIR}/source/PWM.o source/PWM.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD) 
+	
+${OBJECTDIR}/source/RTM_monitor.o: source/RTM_monitor.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/source" 
+	@${RM} ${OBJECTDIR}/source/RTM_monitor.o.d 
+	@${RM} ${OBJECTDIR}/source/RTM_monitor.o 
+	@${FIXDEPS} "${OBJECTDIR}/source/RTM_monitor.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/source/RTM_monitor.o.d" -o ${OBJECTDIR}/source/RTM_monitor.o source/RTM_monitor.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD) 
 	
 endif
 

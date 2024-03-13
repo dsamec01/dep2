@@ -24,6 +24,8 @@
 #include "./../header/dekoder.h"
 #include "./../header/pamet.h"
 #include "./../header/PWM.h"
+#include "./../header/messengerDEP.h"
+#include "./../header/protoypRTM.h"
 
 
 //-- platform Function prototypes are in "platrformDEP32mk" ---------------------
@@ -48,6 +50,8 @@
     DEKODER vystupDekoderu;//-||-
     DETEKCE_HRANY pametS4;//-||-
     ZATEZOVATEL zat;//-||-
+    bool prepinac_RTM; //zalozim si boolovskou promennou pomoci ktere budu prepinat switch u RTM
+    bool debug=0;
 
 //--- External vars -----------------------------------------------------------
 
@@ -63,6 +67,7 @@ void configApplication(void){//------------------------------------------------
    initPametTlacitka(&pametS4, 0);
    initZat(&zat, 0, 0, 0); //inicializace struktury obsahujici zatezovatele
    initPWM(); //nastavim periferie pro PWM
+   initPrepinacRTM(&prepinac_RTM); //inicializuji si prepinac RTM
   
 }// configApplication() END 
 
@@ -85,11 +90,14 @@ void runApplication(void) {//je volanou kazdou 1ms v platformMainMK sem pisu moj
   signalizaceLED(&pametS4, getPrepocetDekoderu(&vystupDekoderu), &zat);//siganlizace led, funkce rozsvici ledky na zaklade nacteni dekoderu nebo potaku
   
  //volani funkci pro PWM
- runPWMPrepoctiAPredej(getZatezovatel(&zat, &pametS4)); //do funkce poslu hodnotu zatezovatele na zaklade prepinace
+ runPWMPrepoctiAPredej(getZatezovatel(&zat, &pametS4, &prepinac_RTM)); //do funkce poslu hodnotu zatezovatele na zaklade prepinace
  setTestPinIRCAasPwmOutput();//kontrola vystupu PWM 
+ 
+ //RTM monitor
+ runKomunikaceRTM(&zat, getZatezovatel(&zat, &pametS4, &prepinac_RTM), &prepinac_RTM); //do funkce poslu strukturu se zatezovatelema do ktery budu ukladat, zaroven tam poslu hodnotu vysledneho zatezovatele ktery budu odesilat a posilam tam hodnotu do ktere budu cist v jake fazi je prepinac u RTM
   
   
-  
+ setLedV5(debug^=1);
   
   
 

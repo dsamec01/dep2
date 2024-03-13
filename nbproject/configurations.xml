@@ -10,6 +10,8 @@
       <itemPath>header/dekoder.h</itemPath>
       <itemPath>header/pamet.h</itemPath>
       <itemPath>header/PWM.h</itemPath>
+      <itemPath>header/messengerDEP.h</itemPath>
+      <itemPath>header/protoypRTM.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -24,6 +26,7 @@
       <itemPath>source/dekoder.c</itemPath>
       <itemPath>source/pamet.c</itemPath>
       <itemPath>source/PWM.c</itemPath>
+      <itemPath>source/RTM_monitor.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
