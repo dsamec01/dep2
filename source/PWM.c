@@ -65,7 +65,7 @@ void __ISR(_TIMER_4_VECTOR, IPL4SOFT) T4_IntHandler(void){ //casovac nacita jedn
  //v preruseni mu reknu jak dlouho ma byt v 1 na zaklade prepoctu, ktery si udelam v mainu a hodim FLAG do 0
     //OC1R v PWM potom vubec nenastavuji, automaticky se do nej predava //popis viz 16.3.3 - po inicializaci se z OC1R stava read-only
     OC1RS = casJednaPrenos; //funguje to tak, ze ja to poslu do OC1RS, pak se mi to presune do OC1R, ten mi nastavi 1 a po nacitani patricneho zatezovatele mi to hodi do 0
-    IFS0CLR = _IFS0_T4IF_MASK;
+    IFS0CLR = _IFS0_T4IF_MASK; //shazuji flag atomicky
 } 
 
 int* getPtrCasJednaPrenos(){ //predam pointer na int
@@ -73,7 +73,7 @@ int* getPtrCasJednaPrenos(){ //predam pointer na int
 } //pracuji s tim jako s pointerem, je to pointer, kdyz to budu predavat funkci, tak musi cekat pointer, ne hdonotu
 
 void runPWMPrepoctiAPredej(int zatezovatel){
-    long casJedna = 0;
+    long casJedna = 0; //dekalruji a inicializuji pomocnou promennou
     casJedna = (PERIOD_MIN - PERIOD_PUL)*zatezovatel; //prepocitam na tiky kdy ma byt v 1
     casJedna=casJedna/ZAT_MIN+PERIOD_PUL; //stale prepocet
     IEC0CLR = _IEC0_T4IE_MASK; //zakazu Interrupt

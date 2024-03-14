@@ -21,10 +21,10 @@
 #define RX_MESSAGE_TYPE_MASK    0xC0 
 
 
-#define MAX_DELKA 17
-#define RTM_INT_DELKA_PRIJEM 7
-#define RTM_DELKA_ODESLI 5
-#define COUNT_MAX 50
+#define MAX_DELKA 17 //signalizuje mi maximalni delku pole (7 mam int, 17 mam float)
+#define RTM_INT_DELKA_PRIJEM 7 //hodnota 7 odopvida rezimu integer
+#define RTM_DELKA_ODESLI 5 //odesilam jen 3 prvky pole (1. delku pole, 2. prvni parametr, 3. druhy parametr)
+#define COUNT_MAX 50 //doba po ktere odesilam nebo prijimam
 
 
 

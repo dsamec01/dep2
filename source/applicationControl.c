@@ -51,7 +51,7 @@
     DETEKCE_HRANY pametS4;//-||-
     ZATEZOVATEL zat;//-||-
     bool prepinac_RTM; //zalozim si boolovskou promennou pomoci ktere budu prepinat switch u RTM
-    bool debug=0;
+    
 
 //--- External vars -----------------------------------------------------------
 
@@ -97,7 +97,7 @@ void runApplication(void) {//je volanou kazdou 1ms v platformMainMK sem pisu moj
  runKomunikaceRTM(&zat, getZatezovatel(&zat, &pametS4, &prepinac_RTM), &prepinac_RTM); //do funkce poslu strukturu se zatezovatelema do ktery budu ukladat, zaroven tam poslu hodnotu vysledneho zatezovatele ktery budu odesilat a posilam tam hodnotu do ktere budu cist v jake fazi je prepinac u RTM
   
   
- setLedV5(debug^=1);
+
   
   
 

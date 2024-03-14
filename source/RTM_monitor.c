@@ -18,9 +18,9 @@
 /* Section: File Scope or Global Data                                         */
 /* ************************************************************************** */
 /* ************************************************************************** */
-unsigned char odesli[MAX_DELKA];
-unsigned char prijmi[MAX_DELKA];
-signed short txCmdInteger = 0;
+unsigned char odesli[MAX_DELKA]; //pole pro odesilani
+unsigned char prijmi[MAX_DELKA]; //pole pro prijimani
+signed short txCmdInteger = 0; //hodnota 0-7, do teto promenne ukladam z jakeho kanalu ctu
 
 
 /* ************************************************************************** */
@@ -37,7 +37,7 @@ void runKomunikaceRTM(ZATEZOVATEL *Ptr_zat, int zatezovatel, bool *Ptr_prepinac)
     //static bool komunikace = FALSE;
     static long ZatezovatelPrenos = 0; //sem budu ukladat data z RTM a z toho pak budu ukladat data do Struktury
     static unsigned char delkaZpravy = 0;
-    static bool tmpPrepinacRTM =0;
+    static bool tmpPrepinacRTM =0; //pomocna promenna do ktere ukladam hodnotu z pointeru na globalni promennou
     
     if (citac50ms ==COUNT_MAX){
         citac50ms = 0;
