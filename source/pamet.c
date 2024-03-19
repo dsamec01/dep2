@@ -101,10 +101,12 @@ bool getPametTlacitkaOutput(DETEKCE_HRANY *Ptr_hrana){
 void signalizaceLED(DETEKCE_HRANY *Ptr_hrana, int prepoctenyDekoder, ZATEZOVATEL *Ptr_zat){ //do signalizace poslu strukturu zatezovatele, vystup z omezovace a hodnotu na zaklade ktere urcuji stav prepinace
     if (Ptr_hrana ->hrana == 0){ //na zaklade stavu prepinace, pokud je v 0 tak ctu z dekoderu(kdy vystupOmezovace je prepoctena hodnota z dekoderu)
     setFpgaVxValue(prepoctenyDekoder);
+    setLedV4(1);
     Ptr_zat->zatPO=prepoctenyDekoder; //prepoctenou hodnotu zatezovatele si ulozim do struktury
     }
     if (Ptr_hrana ->hrana == 1){//na zaklade stavu prepinace, pokud je v 1 tak ctu z potenciometru
         int potenciometrValue = getPotentiometerValue(); //ulozim si hodnotu z potenciometru do pomocne promenne
+        setLedV4(0);
         if (potenciometrValue  > OMEZENI_ADC) { //pokud mam o neco vetsi nez je 2047 tak to oriznu
         potenciometrValue  = OMEZENI_ADC; 
         } 

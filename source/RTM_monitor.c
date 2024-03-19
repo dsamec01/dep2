@@ -33,10 +33,10 @@ void initPrepinacRTM(bool *Ptr_prepinac){
 }
 
 void runKomunikaceRTM(ZATEZOVATEL *Ptr_zat, int zatezovatel, bool *Ptr_prepinac){
+    //staticke promenne aby mi drzeli hodnotu pri dalsim volani fce
     static unsigned char citac50ms = 0; //citac musi byt static aby si pamatoval predchozi hodnotu
-    //static bool komunikace = FALSE;
     static long ZatezovatelPrenos = 0; //sem budu ukladat data z RTM a z toho pak budu ukladat data do Struktury
-    static unsigned char delkaZpravy = 0;
+    static unsigned char delkaZpravy = 0; //seb budu ukladat delku zpravy
     static bool tmpPrepinacRTM =0; //pomocna promenna do ktere ukladam hodnotu z pointeru na globalni promennou
     
     if (citac50ms ==COUNT_MAX){
@@ -46,7 +46,7 @@ void runKomunikaceRTM(ZATEZOVATEL *Ptr_zat, int zatezovatel, bool *Ptr_prepinac)
             txCmdInteger = bytesToInteger(&prijmi[1]); //zjistuje mi jakej prijimam kanal
              
             if((delkaZpravy == RTM_INT_DELKA_PRIJEM)&& (txCmdInteger == 0)){ //pokud je delka 7, tak pouzivam int, pokud je to pak vetsi tak je to float, tzn. ja chci pouzivat jen pro int - diky teto podmince musim komunikovat prostrednictvim toho kanalu ktery se rovna txCmdInteger (volim si z jakeho kanalu chci prijimat)
-                 //komunikace= TRUE; //pomocna promenna kterou overuji zda je podminka splnena
+                 
                  
                  //ctu parametry z RTM
                  *Ptr_prepinac = bytesToInteger(&prijmi[3]); //odpovida prvnimu parametru, kdy na zaklade teto hodnoty prepinam jestli chci zatezovatel z RTM nebo ne (ukladam prvni parametr pole)
@@ -64,9 +64,6 @@ void runKomunikaceRTM(ZATEZOVATEL *Ptr_zat, int zatezovatel, bool *Ptr_prepinac)
                  }
                  Ptr_zat->zatKO = ZatezovatelPrenos; //ulozim do struktury hodnotu zatezovatele z monitoru 
              }
-            //else{
-            //    komunikace = FALSE;
-            //}
              
         }
         //nyni odesilam na RTM nezavisle na tom jestli dostanu zpravu
