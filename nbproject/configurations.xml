@@ -12,6 +12,7 @@
       <itemPath>header/PWM.h</itemPath>
       <itemPath>header/messengerDEP.h</itemPath>
       <itemPath>header/protoypRTM.h</itemPath>
+      <itemPath>header/Hrad_pole.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -27,6 +28,8 @@
       <itemPath>source/pamet.c</itemPath>
       <itemPath>source/PWM.c</itemPath>
       <itemPath>source/RTM_monitor.c</itemPath>
+      <itemPath>source/Hrad_pole.c</itemPath>
+      <itemPath>source/Capture.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"

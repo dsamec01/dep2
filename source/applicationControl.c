@@ -26,6 +26,7 @@
 #include "./../header/PWM.h"
 #include "./../header/messengerDEP.h"
 #include "./../header/protoypRTM.h"
+#include "./../header/Hrad_pole.h"
 
 
 //-- platform Function prototypes are in "platrformDEP32mk" ---------------------
@@ -47,8 +48,14 @@
     FILTR_TLACITKA dekoderStopaA; //zakladam promennou typu FILTR_TLACITKA s nazvem dekoderStopaA, je to promenna tohoto typu, kdy se mi zalozi vse co obsahuje tato struktura
     FILTR_TLACITKA dekoderStopaB; //-||-
     FILTR_TLACITKA tlacitkoS4;//-||-
+    FILTR_TLACITKA tlacitkoS5;//-||-
+    FILTR_TLACITKA tlacitkoS6;//-||-
+    FILTR_TLACITKA tlacitkoS7;//-||-
+    FILTR_TLACITKA tlacitkoS8;//-||-
     DEKODER vystupDekoderu;//-||-
     DETEKCE_HRANY pametS4;//-||-
+    DETEKCE_HRANY pametS5;//-||-
+    DETEKCE_HRANY pametS6;//-||-
     ZATEZOVATEL zat;//-||-
     bool prepinac_RTM; //zalozim si boolovskou promennou pomoci ktere budu prepinat switch u RTM
     
@@ -63,8 +70,14 @@ void configApplication(void){//------------------------------------------------
    initFiltr(&dekoderStopaA, 0); //volam si funkci, kdy vstupem je adresa struktury a zaroven si nastavim pocatecni hodnotu
    initFiltr(&dekoderStopaB, 0); //volam si funkci, kdy vstupem je adresa struktury a zaroven si nastavim pocatecni hodnotu
    initFiltr(&tlacitkoS4, 0); //volam si funkci, kdy vstupem je adresa struktury a zaroven si nastavim pocatecni hodnotu
+   initFiltr(&tlacitkoS5, 0); //volam si funkci, kdy vstupem je adresa struktury a zaroven si nastavim pocatecni hodnotu
+   initFiltr(&tlacitkoS6, 0); //volam si funkci, kdy vstupem je adresa struktury a zaroven si nastavim pocatecni hodnotu
+   initFiltr(&tlacitkoS7, 0); //volam si funkci, kdy vstupem je adresa struktury a zaroven si nastavim pocatecni hodnotu
+   initFiltr(&tlacitkoS8, 0); //volam si funkci, kdy vstupem je adresa struktury a zaroven si nastavim pocatecni hodnotu
    initDekoder(&vystupDekoderu, 0); //volam si funkci, kdy vstupem je adresa struktury a zaroven si nastavim pocatecni hodnotu
    initPametTlacitka(&pametS4, 0);
+   initPametTlacitka(&pametS5, 0);
+   initPametTlacitka(&pametS6, 0);
    initZat(&zat, 0, 0, 0); //inicializace struktury obsahujici zatezovatele
    initPWM(); //nastavim periferie pro PWM
    initPrepinacRTM(&prepinac_RTM); //inicializuji si prepinac RTM
@@ -91,16 +104,28 @@ void runApplication(void) {//je volanou kazdou 1ms v platformMainMK sem pisu moj
   
  //volani funkci pro PWM
  runPWMPrepoctiAPredej(getZatezovatel(&zat, &pametS4, &prepinac_RTM)); //do funkce poslu hodnotu zatezovatele na zaklade prepinace
- setTestPinIRCAasPwmOutput();//kontrola vystupu PWM 
+ //setTestPinIRCAasPwmOutput();//kontrola vystupu PWM 
  
  //RTM monitor
  runKomunikaceRTM(&zat, getZatezovatel(&zat, &pametS4, &prepinac_RTM), &prepinac_RTM); //do funkce poslu strukturu se zatezovatelema do ktery budu ukladat, zaroven tam poslu hodnotu vysledneho zatezovatele ktery budu odesilat a posilam tam hodnotu do ktere budu cist v jake fazi je prepinac u RTM
   
+ //volani funkci pro tlacitko S5
+ runFiltr(&tlacitkoS5,getButtonS5());
+ runPametTlacitka(&pametS5, getFiltrOutput(&tlacitkoS5));
+ 
+ //volani funkci pro tlacitko S6
+ runFiltr(&tlacitkoS6,getButtonS6());
+ runPametTlacitka(&pametS6, getFiltrOutput(&tlacitkoS6));
+ 
+ //volani funkci pro tlacitko S7
+ runFiltr(&tlacitkoS7,getButtonS7());
+ 
+ //volani funkci pro tlacitko S8
+ runFiltr(&tlacitkoS8,getButtonS8());
   
-
-  
-  
-
+ //prepinac k Hradlovemu poli
+ runHradPole(getPametTlacitkaOutput(&pametS5), getPametTlacitkaOutput(&pametS6), getFiltrOutput(&tlacitkoS7), getFiltrOutput(&tlacitkoS8));
+ setTestPinIRCAasIrcOutput();
 }// runApplication() END)
 
 //--- applicationControl.c file END -------------------------------------------
