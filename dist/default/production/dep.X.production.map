@@ -25,19 +25,19 @@ c:/program files/microchip/xc32/v4.35/bin/bin/../../lib/gcc/pic32mx/8.3.1/../../
 c:/program files/microchip/xc32/v4.35/bin/bin/../../lib/gcc/pic32mx/8.3.1/../../../../pic32mx/lib/fpu64\libpic32.a(strlen.o)
                               lib\platformDepLib.X.a(messengerDuoUSB.o) (strlen)
 c:/program files/microchip/xc32/v4.35/bin/bin/../../lib/gcc/pic32mx/8.3.1/../../../../pic32mx/lib/fpu64\libpic32.a(default-bootstrap-exception-handler.o)
-                              C:\Users\samec\AppData\Local\Temp\cc4gviRG.o (_bootstrap_exception_handler)
+                              C:\Users\samec\AppData\Local\Temp\ccbrMtSc.o (_bootstrap_exception_handler)
 c:/program files/microchip/xc32/v4.35/bin/bin/../../lib/gcc/pic32mx/8.3.1/../../../../pic32mx/lib/fpu64\libpic32.a(default-on-reset.o)
-                              C:\Users\samec\AppData\Local\Temp\cc4gviRG.o (_on_reset)
+                              C:\Users\samec\AppData\Local\Temp\ccbrMtSc.o (_on_reset)
 c:/program files/microchip/xc32/v4.35/bin/bin/../../lib/gcc/pic32mx/8.3.1/../../../../pic32mx/lib/fpu64\libpic32.a(default-on-bootstrap.o)
-                              C:\Users\samec\AppData\Local\Temp\cc4gviRG.o (_on_bootstrap)
+                              C:\Users\samec\AppData\Local\Temp\ccbrMtSc.o (_on_bootstrap)
 c:/program files/microchip/xc32/v4.35/bin/bin/../../lib/gcc/pic32mx/8.3.1/../../../../pic32mx/lib/fpu64\libpic32.a(default-nmi-handler.o)
-                              C:\Users\samec\AppData\Local\Temp\cc4gviRG.o (_nmi_handler)
+                              C:\Users\samec\AppData\Local\Temp\ccbrMtSc.o (_nmi_handler)
 c:/program files/microchip/xc32/v4.35/bin/bin/../../lib/gcc/pic32mx/8.3.1/../../../../pic32mx/lib/fpu64\libpic32.a(pic32_data_init_core.o)
-                              C:\Users\samec\AppData\Local\Temp\cc4gviRG.o (__pic32_data_init)
+                              C:\Users\samec\AppData\Local\Temp\ccbrMtSc.o (__pic32_data_init)
 c:/program files/microchip/xc32/v4.35/bin/bin/../../lib/gcc/pic32mx/8.3.1/../../../../pic32mx/lib/fpu64\libpic32.a(general-exception.o)
-                              C:\Users\samec\AppData\Local\Temp\cc4gviRG.o (_general_exception_context)
+                              C:\Users\samec\AppData\Local\Temp\ccbrMtSc.o (_general_exception_context)
 c:/program files/microchip/xc32/v4.35/bin/bin/../../lib/gcc/pic32mx/8.3.1/../../../../pic32mx/lib/fpu64\libpic32.a(defaultinterrupt.o)
-                              C:\Users\samec\AppData\Local\Temp\ccCul2FU.o (_DefaultInterrupt)
+                              C:\Users\samec\AppData\Local\Temp\ccPjGlJZ.o (_DefaultInterrupt)
 c:/program files/microchip/xc32/v4.35/bin/bin/../../lib/gcc/pic32mx/8.3.1/../../../../pic32mx/lib/fpu64\libpic32.a(default-general-exception-handler.o)
                               c:/program files/microchip/xc32/v4.35/bin/bin/../../lib/gcc/pic32mx/8.3.1/../../../../pic32mx/lib/fpu64\libpic32.a(general-exception.o) (_general_exception_handler)
 c:/program files/microchip/xc32/v4.35/bin/bin/../../lib/gcc/pic32mx/8.3.1/../../../../pic32mx/lib/fpu64\libc-musl.a(strcat.o)
@@ -174,7 +174,7 @@ Microchip PIC32 Memory-Usage Report By Module
          672           0           1         673         2a1    platformInitTimer1.o                 platformDepLib.X.a
          576           0          30         606         25e    applicationControl.o                 build/default/production/source/applicationControl.o
          600           0           0         600         258    filtrace.o                           build/default/production/source/filtrace.o
-         524           0           0         524         20c    cc4gviRG.o                           C:\Users\samec\AppData\Local\Temp\cc4gviRG.o
+         524           0           0         524         20c    ccbrMtSc.o                           C:\Users\samec\AppData\Local\Temp\ccbrMtSc.o
          448           0          46         494         1ee    RTM_monitor.o                        build/default/production/source/RTM_monitor.o
          456           0           1         457         1c9    platformInitTimer8.o                 platformDepLib.X.a
          416           0           0         416         1a0    strcpy.o                             libpic32.a
@@ -257,16 +257,16 @@ Discarded input sections
  .reginfo       0x0000000000000000       0x18 lib\platformDepLib.X.a(mesengerFRAM.o)
  .MIPS.abiflags
                 0x0000000000000000       0x18 lib\platformDepLib.X.a(mesengerFRAM.o)
- .reginfo       0x0000000000000000       0x18 C:\Users\samec\AppData\Local\Temp\cc4gviRG.o
+ .reginfo       0x0000000000000000       0x18 C:\Users\samec\AppData\Local\Temp\ccbrMtSc.o
  .MIPS.abiflags
-                0x0000000000000000       0x18 C:\Users\samec\AppData\Local\Temp\cc4gviRG.o
- .reginfo       0x0000000000000000       0x18 C:\Users\samec\AppData\Local\Temp\ccgnTLjd.o
+                0x0000000000000000       0x18 C:\Users\samec\AppData\Local\Temp\ccbrMtSc.o
+ .reginfo       0x0000000000000000       0x18 C:\Users\samec\AppData\Local\Temp\cc9lwpJR.o
  .MIPS.abiflags
-                0x0000000000000000       0x18 C:\Users\samec\AppData\Local\Temp\ccgnTLjd.o
- .reginfo       0x0000000000000000       0x18 C:\Users\samec\AppData\Local\Temp\ccCul2FU.o
+                0x0000000000000000       0x18 C:\Users\samec\AppData\Local\Temp\cc9lwpJR.o
+ .reginfo       0x0000000000000000       0x18 C:\Users\samec\AppData\Local\Temp\ccPjGlJZ.o
  .MIPS.abiflags
-                0x0000000000000000       0x18 C:\Users\samec\AppData\Local\Temp\ccCul2FU.o
- .discard       0x0000000000000000        0x4 C:\Users\samec\AppData\Local\Temp\ccCul2FU.o
+                0x0000000000000000       0x18 C:\Users\samec\AppData\Local\Temp\ccPjGlJZ.o
+ .discard       0x0000000000000000        0x4 C:\Users\samec\AppData\Local\Temp\ccPjGlJZ.o
  .reginfo       0x0000000000000000       0x18 c:/program files/microchip/xc32/v4.35/bin/bin/../../lib/gcc/pic32mx/8.3.1/../../../../pic32mx/lib/./proc/32MK1024MCF100\default_isr_vectors.o
  .MIPS.abiflags
                 0x0000000000000000       0x18 c:/program files/microchip/xc32/v4.35/bin/bin/../../lib/gcc/pic32mx/8.3.1/../../../../pic32mx/lib/./proc/32MK1024MCF100\default_isr_vectors.o
@@ -456,9 +456,9 @@ LOAD build/default/production/source/PWM.o
 LOAD build/default/production/source/RTM_monitor.o
 LOAD lib\platformDepLib.X.a
                 0x0000000000000001                __MPLAB_BUILD = 0x1
-LOAD C:\Users\samec\AppData\Local\Temp\cc4gviRG.o
-LOAD C:\Users\samec\AppData\Local\Temp\ccgnTLjd.o
-LOAD C:\Users\samec\AppData\Local\Temp\ccCul2FU.o
+LOAD C:\Users\samec\AppData\Local\Temp\ccbrMtSc.o
+LOAD C:\Users\samec\AppData\Local\Temp\cc9lwpJR.o
+LOAD C:\Users\samec\AppData\Local\Temp\ccPjGlJZ.o
 LOAD c:/program files/microchip/xc32/v4.35/bin/bin/../../lib/gcc/pic32mx/8.3.1/../../../../pic32mx/lib/./proc/32MK1024MCF100\default_isr_vectors.o
 LOAD c:/program files/microchip/xc32/v4.35/bin/bin/../../lib/gcc/pic32mx/8.3.1/../../../../pic32mx/lib/fpu64\pic32_software_reset.o
 LOAD c:/program files/microchip/xc32/v4.35/bin/bin/../../lib/gcc/pic32mx/8.3.1/fpu64\libgcc.a
@@ -639,20 +639,20 @@ END GROUP
 
 .reset          0x00000000bfc00000      0x198
  *(.reset)
- .reset         0x00000000bfc00000       0x18 C:\Users\samec\AppData\Local\Temp\cc4gviRG.o
+ .reset         0x00000000bfc00000       0x18 C:\Users\samec\AppData\Local\Temp\ccbrMtSc.o
                 0x00000000bfc00000                _reset
  *(.reset.startup)
  .reset.startup
-                0x00000000bfc00018      0x180 C:\Users\samec\AppData\Local\Temp\cc4gviRG.o
+                0x00000000bfc00018      0x180 C:\Users\samec\AppData\Local\Temp\ccbrMtSc.o
                 0x00000000bfc00018                _startup
 
 .bev_excpt      0x00000000bfc00380       0x10
  *(.bev_handler)
- .bev_handler   0x00000000bfc00380       0x10 C:\Users\samec\AppData\Local\Temp\cc4gviRG.o
+ .bev_handler   0x00000000bfc00380       0x10 C:\Users\samec\AppData\Local\Temp\ccbrMtSc.o
 
 .app_excpt      0x000000009d000180       0x10
  *(.gen_handler)
- .gen_handler   0x000000009d000180       0x10 C:\Users\samec\AppData\Local\Temp\cc4gviRG.o
+ .gen_handler   0x000000009d000180       0x10 C:\Users\samec\AppData\Local\Temp\ccbrMtSc.o
 
 .vectors        0x000000009d000200       0xd8
                 0x000000009d000200                . = ALIGN (0x4)
@@ -2123,11 +2123,11 @@ END GROUP
  .gnu.attributes
                 0x0000000000000110       0x10 lib\platformDepLib.X.a(mesengerFRAM.o)
  .gnu.attributes
-                0x0000000000000120       0x10 C:\Users\samec\AppData\Local\Temp\cc4gviRG.o
+                0x0000000000000120       0x10 C:\Users\samec\AppData\Local\Temp\ccbrMtSc.o
  .gnu.attributes
-                0x0000000000000130       0x10 C:\Users\samec\AppData\Local\Temp\ccgnTLjd.o
+                0x0000000000000130       0x10 C:\Users\samec\AppData\Local\Temp\cc9lwpJR.o
  .gnu.attributes
-                0x0000000000000140       0x10 C:\Users\samec\AppData\Local\Temp\ccCul2FU.o
+                0x0000000000000140       0x10 C:\Users\samec\AppData\Local\Temp\ccPjGlJZ.o
  .gnu.attributes
                 0x0000000000000150       0x10 c:/program files/microchip/xc32/v4.35/bin/bin/../../lib/gcc/pic32mx/8.3.1/../../../../pic32mx/lib/./proc/32MK1024MCF100\default_isr_vectors.o
  .gnu.attributes
@@ -2259,13 +2259,13 @@ LOAD stack
  .data          0x0000000000000000        0x0 c:/program files/microchip/xc32/v4.35/bin/bin/../../lib/gcc/pic32mx/8.3.1/../../../../pic32mx/lib/./proc/32MK1024MCF100\default_isr_vectors.o
 
 .data%z17       0x0000000000000000        0x0
- .data          0x0000000000000000        0x0 C:\Users\samec\AppData\Local\Temp\ccCul2FU.o
+ .data          0x0000000000000000        0x0 C:\Users\samec\AppData\Local\Temp\ccPjGlJZ.o
 
 .data%z18       0x0000000000000000        0x0
- .data          0x0000000000000000        0x0 C:\Users\samec\AppData\Local\Temp\ccgnTLjd.o
+ .data          0x0000000000000000        0x0 C:\Users\samec\AppData\Local\Temp\cc9lwpJR.o
 
 .data%z19       0x0000000000000000        0x0
- .data          0x0000000000000000        0x0 C:\Users\samec\AppData\Local\Temp\cc4gviRG.o
+ .data          0x0000000000000000        0x0 C:\Users\samec\AppData\Local\Temp\ccbrMtSc.o
 
 .data%z20       0x0000000000000000        0x0
  .data          0x0000000000000000        0x0 lib\platformDepLib.X.a(mesengerFRAM.o)
@@ -2370,13 +2370,13 @@ LOAD stack
  .bss           0x0000000000000000        0x0 c:/program files/microchip/xc32/v4.35/bin/bin/../../lib/gcc/pic32mx/8.3.1/../../../../pic32mx/lib/./proc/32MK1024MCF100\default_isr_vectors.o
 
 .bss%z54        0x0000000000000000        0x0
- .bss           0x0000000000000000        0x0 C:\Users\samec\AppData\Local\Temp\ccCul2FU.o
+ .bss           0x0000000000000000        0x0 C:\Users\samec\AppData\Local\Temp\ccPjGlJZ.o
 
 .bss%z55        0x0000000000000000        0x0
- .bss           0x0000000000000000        0x0 C:\Users\samec\AppData\Local\Temp\ccgnTLjd.o
+ .bss           0x0000000000000000        0x0 C:\Users\samec\AppData\Local\Temp\cc9lwpJR.o
 
 .bss%z56        0x0000000000000000        0x0
- .bss           0x0000000000000000        0x0 C:\Users\samec\AppData\Local\Temp\cc4gviRG.o
+ .bss           0x0000000000000000        0x0 C:\Users\samec\AppData\Local\Temp\ccbrMtSc.o
 
 .bss%z57        0x0000000000000000        0x0
  .bss           0x0000000000000000        0x0 lib\platformDepLib.X.a(mesengerFRAM.o)
@@ -2665,7 +2665,7 @@ LOAD stack
 .text.main_entry
                 0x000000009d000190       0x54
  .text.main_entry
-                0x000000009d000190       0x54 C:\Users\samec\AppData\Local\Temp\cc4gviRG.o
+                0x000000009d000190       0x54 C:\Users\samec\AppData\Local\Temp\ccbrMtSc.o
                 0x000000009d0001c4                __crt0_exit
 
 .text._bootstrap_exception_handler
@@ -2749,13 +2749,13 @@ LOAD stack
  .text          0x0000000000000000        0x0 c:/program files/microchip/xc32/v4.35/bin/bin/../../lib/gcc/pic32mx/8.3.1/../../../../pic32mx/lib/./proc/32MK1024MCF100\default_isr_vectors.o
 
 .text%z84       0x0000000000000000        0x0
- .text          0x0000000000000000        0x0 C:\Users\samec\AppData\Local\Temp\ccCul2FU.o
+ .text          0x0000000000000000        0x0 C:\Users\samec\AppData\Local\Temp\ccPjGlJZ.o
 
 .text%z85       0x0000000000000000        0x0
- .text          0x0000000000000000        0x0 C:\Users\samec\AppData\Local\Temp\ccgnTLjd.o
+ .text          0x0000000000000000        0x0 C:\Users\samec\AppData\Local\Temp\cc9lwpJR.o
 
 .text%z86       0x0000000000000000        0x0
- .text          0x0000000000000000        0x0 C:\Users\samec\AppData\Local\Temp\cc4gviRG.o
+ .text          0x0000000000000000        0x0 C:\Users\samec\AppData\Local\Temp\ccbrMtSc.o
 
 .text%z87       0x0000000000000000        0x0
  .text          0x0000000000000000        0x0 c:/program files/microchip/xc32/v4.35/bin/bin/../../lib/gcc/pic32mx/8.3.1/../../../../pic32mx/lib/fpu64\debug-exception-return.o

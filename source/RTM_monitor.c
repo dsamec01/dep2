@@ -41,7 +41,7 @@ void runKomunikaceRTM(ZATEZOVATEL *Ptr_zat, int zatezovatel, bool *Ptr_prepinac)
     
     if (citac50ms ==COUNT_MAX){
         citac50ms = 0;
-        if(getMessageUSB(prijmi, COM_GO) == TRUE){ //testuji zda dostanu zpravu
+        if(getMessageUSB(prijmi, COM_GO) == TRUE){ //testuji zda dostanu zpravu - pokud ano jdu dal
             delkaZpravy = prijmi[0]; //ukladam nultou hodnotu pole, ktera mi urcuje delku zpravy - podle toho urcim zda mam int nebo ne
             txCmdInteger = bytesToInteger(&prijmi[1]); //zjistuje mi jakej prijimam kanal
              
