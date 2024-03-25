@@ -13,6 +13,7 @@
       <itemPath>header/messengerDEP.h</itemPath>
       <itemPath>header/protoypRTM.h</itemPath>
       <itemPath>header/Hrad_pole.h</itemPath>
+      <itemPath>header/Caputre.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"

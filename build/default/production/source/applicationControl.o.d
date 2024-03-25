@@ -6,5 +6,6 @@ source/./../header/dekoder.h  \
  source/./../header/pamet.h  \
 source/./../header/PWM.h  \
  source/./../header/messengerDEP.h  \
-source/./../header/protoypRTM.h  \
- source/./../header/Hrad_pole.h 
+source/./../header/Hrad_pole.h  \
+ source/./../header/Caputre.h  \
+source/./../header/protoypRTM.h 

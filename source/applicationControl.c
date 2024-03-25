@@ -25,8 +25,9 @@
 #include "./../header/pamet.h"
 #include "./../header/PWM.h"
 #include "./../header/messengerDEP.h"
-#include "./../header/protoypRTM.h"
 #include "./../header/Hrad_pole.h"
+#include "./../header/Caputre.h"
+#include "./../header/protoypRTM.h"
 
 
 //-- platform Function prototypes are in "platrformDEP32mk" ---------------------
@@ -58,6 +59,7 @@
     DETEKCE_HRANY pametS6;//-||-
     ZATEZOVATEL zat;//-||-
     bool prepinac_RTM; //zalozim si boolovskou promennou pomoci ktere budu prepinat switch u RTM
+    CAPTURE_RTM captureRTM;
     
 
 //--- External vars -----------------------------------------------------------
@@ -81,6 +83,8 @@ void configApplication(void){//------------------------------------------------
    initZat(&zat, 0, 0, 0); //inicializace struktury obsahujici zatezovatele
    initPWM(); //nastavim periferie pro PWM
    initPrepinacRTM(&prepinac_RTM); //inicializuji si prepinac RTM
+   initCapture();
+   initVypocetOtacekASmeru(&captureRTM);
   
 }// configApplication() END 
 
@@ -105,9 +109,6 @@ void runApplication(void) {//je volanou kazdou 1ms v platformMainMK sem pisu moj
  //volani funkci pro PWM
  runPWMPrepoctiAPredej(getZatezovatel(&zat, &pametS4, &prepinac_RTM)); //do funkce poslu hodnotu zatezovatele na zaklade prepinace
  //setTestPinIRCAasPwmOutput();//kontrola vystupu PWM 
- 
- //RTM monitor
- runKomunikaceRTM(&zat, getZatezovatel(&zat, &pametS4, &prepinac_RTM), &prepinac_RTM); //do funkce poslu strukturu se zatezovatelema do ktery budu ukladat, zaroven tam poslu hodnotu vysledneho zatezovatele ktery budu odesilat a posilam tam hodnotu do ktere budu cist v jake fazi je prepinac u RTM
   
  //volani funkci pro tlacitko S5
  runFiltr(&tlacitkoS5,getButtonS5());
@@ -123,9 +124,14 @@ void runApplication(void) {//je volanou kazdou 1ms v platformMainMK sem pisu moj
  //volani funkci pro tlacitko S8
  runFiltr(&tlacitkoS8,getButtonS8());
   
- //prepinac k Hradlovemu poli
+ //prepinac k Hradlovemu poli s vypocty Capture jednotky
  runHradPole(getPametTlacitkaOutput(&pametS5), getPametTlacitkaOutput(&pametS6), getFiltrOutput(&tlacitkoS7), getFiltrOutput(&tlacitkoS8));
  setTestPinIRCAasIrcOutput();
+ runVypocetOtacekASmeru(&captureRTM);
+ 
+ //RTM monitor
+ runKomunikaceRTM(&zat, getZatezovatel(&zat, &pametS4, &prepinac_RTM), &prepinac_RTM, &captureRTM); //do funkce poslu strukturu se zatezovatelema do ktery budu ukladat, zaroven tam poslu hodnotu vysledneho zatezovatele ktery budu odesilat a posilam tam hodnotu do ktere budu cist v jake fazi je prepinac u RTM
+ 
 }// runApplication() END)
 
 //--- applicationControl.c file END -------------------------------------------

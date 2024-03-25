@@ -29,7 +29,7 @@
     typedef struct {
         /* Describe structure member. */
         unsigned char stav;
-        char smer; //hodnota -127 az 127
+        char hodNatoc; //hodnota -127 az 127 - hodnota natoceni dekoderu
                    } DEKODER;
         
     enum{S0,S1,S2,S3,S4};

@@ -32,7 +32,7 @@ void initPWM(void){
     T4CONbits.SIDL=0; //nepouzivam
     T4CONbits.TGATE=0; //chci 0 protoze chci posilat hodnotu procesoru
     T4CONbits.TCKPS=0;//nepozivam preddelicku
-    T4CONbits.T32=0; //beru 16 bitu, pac se mi to tam vejde (?????abych nemusel spojovat dva timery pro Compare, ktera je 32 bitova??????)
+    T4CONbits.T32=0; //beru 16 bitu, pac se mi to tam vejde 
     T4CONbits.TCS=0; //chci posilat frekvenci procesoru
     
     TMR4=0; //vynuluji casovy registr

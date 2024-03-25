@@ -4,4 +4,5 @@ source/RTM_monitor.c  \
 source/./../header/platformDEP32mk.h  \
  source/./../header/pamet.h  \
 source/./../header/dekoder.h  \
- source/./../header/protoypRTM.h 
+ source/./../header/Caputre.h  \
+source/./../header/protoypRTM.h 
