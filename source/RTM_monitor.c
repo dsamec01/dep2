@@ -115,7 +115,7 @@ void runKomunikaceRTM(ZATEZOVATEL *Ptr_zat, int zatezovatel, bool *Ptr_prepinac,
                     
                     case 3: {//odesilani do TableTerminalu
                     char ot[40];//zakladam pole charu pro smer
-                    sprintf(ot, "otycky = %4d [ot/min]", otacky);//prevadi mi to na string, ktery budu vysilat to TableTerminalu
+                    sprintf(ot, "otacky = %4d [ot/min]", otacky);//prevadi mi to na string, ktery budu vysilat to TableTerminalu
                     sendTableTerminalMessageUSB("3A", ot);
                     citacCyklu = 0;
                     break;
