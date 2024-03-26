@@ -82,42 +82,42 @@ void runKomunikaceRTM(ZATEZOVATEL *Ptr_zat, int zatezovatel, bool *Ptr_prepinac,
                 //nyni odesilam na RTM nezavisle na tom jestli dostanu zpravu
                 switch(citacCyklu){
                     case 0: {//odesilani do grafiky
-                    odesli[0] = RTM_DELKA_ODESLI; //odesle mi ze posilam dve hodnoty (nastavuji prvni hodnotu pole)
-                    tmpPrepinacRTM = *Ptr_prepinac;//ulozim si ukazatel do pomocne promenne, kterouu pak odeslu
-                    integerToBytes(tmpPrepinacRTM, &odesli[1]); //odesilam v jakem stavu mam prepinac RTM
-                    integerToBytes(zatezovatel, &odesli[3]); //odesilam jakou mam hodnotu zatezovatele, ktery mi vratil return ze struktury
-                    otacky = Ptr_CaptureRTM -> otacky;
-                    smerOtaceni = Ptr_CaptureRTM -> smerOtaceni;
-                    otacky = otacky*smerOtaceni; //az tohle povolim tak vymazat smerOtaceni z case2
-                    integerToBytes(otacky, &odesli[5]);
-                    sendMessageUSB(odesli, COM_GO); //odesilam hodnotu po komunikaci 
-                    citacCyklu = 1;
+                        odesli[0] = RTM_DELKA_ODESLI; //odesle mi ze posilam dve hodnoty (nastavuji prvni hodnotu pole)
+                        tmpPrepinacRTM = *Ptr_prepinac;//ulozim si ukazatel do pomocne promenne, kterouu pak odeslu
+                        integerToBytes(tmpPrepinacRTM, &odesli[1]); //odesilam v jakem stavu mam prepinac RTM
+                        integerToBytes(zatezovatel, &odesli[3]); //odesilam jakou mam hodnotu zatezovatele, ktery mi vratil return ze struktury
+                        otacky = Ptr_CaptureRTM -> otacky;
+                        smerOtaceni = Ptr_CaptureRTM -> smerOtaceni;
+                        otacky = otacky*smerOtaceni; //az tohle povolim tak vymazat smerOtaceni z case2
+                        integerToBytes(otacky, &odesli[5]);
+                        sendMessageUSB(odesli, COM_GO); //odesilam hodnotu po komunikaci 
+                        citacCyklu = 1;
                     break;
                     }
                     
                     case 1: {//odesilani do TableTerminalu - musim po jedne hodnote
-                    perioda = Ptr_CaptureRTM -> perioda;
-                    char per[40]; //zakladam pole charu pro periodu
-                    sprintf(per, "perioda = %4d [us]", perioda); //prevadi mi to na string, ktery budu vysilat to TableTerminalu
-                    sendTableTerminalMessageUSB("1A", per);
-                    citacCyklu = 2;
+                        perioda = Ptr_CaptureRTM -> perioda;
+                        char per[40]; //zakladam pole charu pro periodu
+                        sprintf(per, "perioda = %4d [us]", perioda); //prevadi mi to na string, ktery budu vysilat to TableTerminalu
+                        sendTableTerminalMessageUSB("1A", per);
+                        citacCyklu = 2;
                     break;
                     }
                     
                     case 2: {//odesilani do TableTerminalu
-                    //smerOtaceni = Ptr_CaptureRTM -> smerOtaceni;
-                    char sm[40];//zakladam pole charu pro smer
-                    sprintf(sm, "smer otaceni je %4d", smerOtaceni);//prevadi mi to na string, ktery budu vysilat to TableTerminalu
-                    sendTableTerminalMessageUSB("2A", sm);
-                    citacCyklu = 3;
+                        //smerOtaceni = Ptr_CaptureRTM -> smerOtaceni;
+                        char sm[40];//zakladam pole charu pro smer
+                        sprintf(sm, "smer otaceni je %4d", smerOtaceni);//prevadi mi to na string, ktery budu vysilat to TableTerminalu
+                        sendTableTerminalMessageUSB("2A", sm);
+                        citacCyklu = 3;
                     break;
                     }
                     
                     case 3: {//odesilani do TableTerminalu
-                    char ot[40];//zakladam pole charu pro smer
-                    sprintf(ot, "otacky = %4d [ot/min]", otacky);//prevadi mi to na string, ktery budu vysilat to TableTerminalu
-                    sendTableTerminalMessageUSB("3A", ot);
-                    citacCyklu = 0;
+                        char ot[40];//zakladam pole charu pro smer
+                        sprintf(ot, "otacky = %4d [ot/min]", otacky);//prevadi mi to na string, ktery budu vysilat to TableTerminalu
+                        sendTableTerminalMessageUSB("3A", ot);
+                        citacCyklu = 0;
                     break;
                     }
                 }           

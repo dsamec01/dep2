@@ -57,7 +57,7 @@ void initCapture(void) {
     PR6 = 0xFFFFFFFF; //nactu PR6 a PR7 32 bitovou hodnotou (2 na 32)
     //inicializace Interrupt - hodnoty k preruseni najdu v tabulce 8-3 - od tohoto timeru zakazuji preruseni (pouzivam ho pouze jako referencni)
     IFS2bits.T7IF = 0; //Interrupt flag nastavuji na 0, nemam na zacatku flag
-    IEC2bits.T7IE = 0; //Zakazuji preruseni - nebudu ho vubec pouzivat
+    IEC2bits.T7IE = 0; //Zakazuji preruseni - nebudu ho vubec pouzivat - priorita nehraje roli nebot nepouzivam preruseni
 
     //nastavuji Timer pro chybovy hlaseni
     //nastavim T9CON - staci mi 16 bitu -> pokud ma 1:1 pretece za 1,1ms jelikoz ale chci max periodu 20ms tak potrebuji preddelicku 1:32  
@@ -92,8 +92,8 @@ void initCapture(void) {
     IPC20bits.IC7EIS = 1; //nastavuji subprioritu na 1
     IEC2bits.IC7EIE = 1; //povoluji preruseni
 
-    unsigned int zahod;
-    while (IC7CONbits.ICBNE != 0) { //vycistim buffer
+    unsigned int zahod = 0;
+    while (IC7CONbits.ICBNE != 0) { //vycistim buffer pri inicializaci abych mel jistotu ze tam nic neni
         zahod = IC7BUF;
     }
 
@@ -105,21 +105,22 @@ void initCapture(void) {
 }
 
 void __ISR(_INPUT_CAPTURE_7_VECTOR, IPL4SOFT) IC7_IntHandler(void) { //po detekci jedne hrany mi to vyvola preruseni
-    unsigned int zahod = 0;
+    unsigned int zahod = 0; //pomoci teto promenne budu zahazovat hodnoty
+    
     //vypoet periody
-    CasOld = CasNew; //ukladam do stare hodnoty predchozi hodnotu - vzdy pri dalsim preruseni se mi ta hodnota prepise
-    stopaB = getIrcChannelBValue(); //do stopy A si nactu hodnotu ze stopyB
+    CasOld = CasNew; //ukladam do stare hodnoty predchozi hodnotu - vzdy pri dalsim preruseni se mi ta hodnota prepise (po prvnim prichodu mam 0 a v dalsim prichodu do preruseni prepisuji)
+    stopaB = getIrcChannelBValue(); //do stopyB si nactu hodnotu ze stopyB
     CasNew = IC7BUF; //nacitam novou hodnotu z bufferu
     //urcim rozdil hodnot
     if (prvniPreruseniIC7 == 1) { //pokud mam prvni preruseni po stavu kdy se motor netocil tak periodu nepocitam
-        prvniPreruseniIC7 = 0; //shodim do 0 - uz mi bude chodit do elsu
         while (IC7CONbits.ICBNE != 0) { //vycistim buffer - po tom co mam prvni preruseni tak vycistim buffer a jdu od znova 
             zahod = IC7BUF;
         }
+        prvniPreruseniIC7 = 0; //shodim do 0 - uz mi bude chodit do elsu
     } else {
         periodaTickPrenos = CasNew - CasOld; //pokud nemam prvni preruseni po stavu kdy se motor netocil tak normalne pocitam rozdil dob
     }
-    //vypocet smeru
+
     //urceni smeru otaceni - hodnota 1 = kladny/-1 = zaporny
     if (stopaB == 1) { //pokud mam hranu na A (nastalo preruseni) a zaroven mam B v 1 tak se mi to otaci po smeru (clockwise)
         smerOtaceniPrenos = 1; //otacim se po smeru (mam 1)
@@ -131,18 +132,18 @@ void __ISR(_INPUT_CAPTURE_7_VECTOR, IPL4SOFT) IC7_IntHandler(void) { //po detekc
 }
 
 void __ISR(_INPUT_CAPTURE_7_ERROR_VECTOR, IPL6SOFT) IC7IntErrorHandler(void) {//po nacitani mi to vynuluje buffer
-    unsigned int zahod;
-    while (IC7CONbits.ICBNE != 0) {
+    unsigned int zahod = 0; //pomoci teto promenne budu vyhozvat hodnoty z bufferu v pripade poruchy
+    while (IC7CONbits.ICBNE != 0) { //dokud registr nebude vynulovany tak nacitej do zahod, cimz zahodis tuto hodnotu
         zahod = IC7BUF;
     }
-    IFS2CLR = _IFS2_IC7EIF_MASK; // Interrupt flag status bit  
+    IFS2CLR = _IFS2_IC7EIF_MASK; // Interrupt flag status bit shazuji atomicky 
 }
 
 void __ISR(_TIMER_9_VECTOR, IPL4SOFT) T9_IntHandler(void) { //casovac nacita jednu periodu, vyvola preruseni - pri preruseni kontroluji zda mam zaroven plny buffer
     unsigned int zahod = 0; //pomoci teto promenne budu vyhozvat hodnoty z bufferu v pripade poruchy
     TMR9Preteceni++; //pricita se kazde preruseni (po 32ms)
-    if (IC7CONbits.ICOV == 1) { //pokud dojde k vyvolani preruseni od timeru 9 (vim ze mam 32ms) a zaroven mi to pretece, mam chybovy stav a registr musim vynulovat
-        while (IC7CONbits.ICBNE != 0) { //dokud registr nebude vyvolany tak nacitej do zahod, cimz zahodis tuto hodnotu
+    if (IC7CONbits.ICOV == 1) { //pokud dojde k vyvolani preruseni od timeru 9 (vim ze mam 32ms) a zaroven mi to pretece, mam chybovy stav tak registr musim vynulovat
+        while (IC7CONbits.ICBNE != 0) { //dokud registr nebude vynulovany tak nacitej do zahod, cimz zahodis tuto hodnotu
             zahod = IC7BUF;
         }
     }
@@ -151,15 +152,15 @@ void __ISR(_TIMER_9_VECTOR, IPL4SOFT) T9_IntHandler(void) { //casovac nacita jed
 
 void runVypocetOtacekASmeru(CAPTURE_RTM *Ptr_CaptureRTM) {
     //nastaveni lokalnich promennych
-    unsigned int tmpperiodaTick = 0; //sem budu ukladat hodnoty z tiku
+    unsigned int tmpPeriodaTick = 0; //sem budu ukladat hodnoty z tiku
     static int tmpOtacky = 0; //do teto hodnoty budu ukladat hodnotu otacek
-    char tmpsmerOtaceni = 0; //do teto hodnoty budu ukladat smer
+    char tmpSmerOtaceni = 0; //do teto hodnoty budu ukladat smer
 
     //urceni periody a smeru- hodnoty a vypoet zapisuji v preruseni
     IEC2CLR = _IEC2_IC7IE_MASK; //zakazu Interrupt od Capture
     IEC2CLR = _IEC2_T9IE_MASK; //zakazu Interrupt od Timeru9 (abych si to kdyztak hned nevyhodil pomoci zahod)
-    tmpperiodaTick = periodaTickPrenos; //prenesu si hodnoty
-    tmpsmerOtaceni = smerOtaceniPrenos; //prenesu si hodnoty
+    tmpPeriodaTick = periodaTickPrenos; //prenesu si hodnoty
+    tmpSmerOtaceni = smerOtaceniPrenos; //prenesu si hodnoty
     IEC2SET = _IEC2_IC7IE_MASK; //povolim Interrupt od Capture
     IEC2SET = _IEC2_T9IE_MASK; //polovim Interrupt od Timeru9
 
@@ -169,12 +170,12 @@ void runVypocetOtacekASmeru(CAPTURE_RTM *Ptr_CaptureRTM) {
         Ptr_CaptureRTM->smerOtaceni = 0; //motor se netoci
         prvniPreruseniIC7 = 1; //zase se mi bude pocitat perioda az pri dalsim preruseni
     } else {//jinak se motor toci a urcuji otacky - vztah n= 60f (pp = 1)
-        Ptr_CaptureRTM->perioda = tmpperiodaTick / 60; //tim dostavam hodnotu mezi pulzy v us
-        if (tmpperiodaTick != 0) { //osetrim pred delenim nulou
-            tmpOtacky = OTACKY_PREPOC / tmpperiodaTick; //pri prepoctu na sekundy tiky podelim 60 Mhz, cimz dostanu hodnotu v sekundach, hodnotu tiku vynasobim 500, coz je rozliseni inkrementalniho cidla (500 im/ot) - udelam prevracenou hodnotu, mam frekvenci a tu vynasobim 60
+        Ptr_CaptureRTM->perioda = tmpPeriodaTick / 60; //tim dostavam hodnotu mezi pulzy v us
+        if (tmpPeriodaTick != 0) { //osetrim pred delenim nulou
+            tmpOtacky = OTACKY_PREPOC / tmpPeriodaTick; //pri prepoctu na sekundy tiky podelim 60 Mhz, cimz dostanu hodnotu v sekundach, hodnotu tiku vynasobim 500, coz je rozliseni inkrementalniho cidla (500 im/ot) - udelam prevracenou hodnotu, mam frekvenci a tu vynasobim 60
             Ptr_CaptureRTM->otacky = tmpOtacky; //predam si to do globalni promenne, kterou poslu do RTM
         }
-        Ptr_CaptureRTM->smerOtaceni = tmpsmerOtaceni; //predavam si do globalni promenne, kterou poslu do RTM
+        Ptr_CaptureRTM->smerOtaceni = tmpSmerOtaceni; //predavam si do globalni promenne, kterou poslu do RTM
     }
 
 }
