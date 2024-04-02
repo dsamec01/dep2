@@ -80,7 +80,7 @@ void initCapture(void) {
     IC7CONbits.ICI = 0b00; //chci preruseni na kazdou nabeznou hranu
     IC7CONbits.ICM = 0b011; //pouzivam rezim detekce nabeznych hran
     //nastavim referencni casovac pro Compare Unitu - tabulka 18-1 (nastavuji ze pouzvam 32 bitovy timer6)
-    // CFGCONbits.ICACLK=1;  //navic??
+    // CFGCONbits.ICACLK=1;  //toto je nastaveno v PlatformDEP, jinak bych musel nastavit
     //nastaveim preruseni od Capture Unit
     IFS2bits.IC7IF = 0; //shazuji Interrup flag
     IPC20bits.IC7IP = 4; //nastavuji prioritu na 4
@@ -118,7 +118,7 @@ void __ISR(_INPUT_CAPTURE_7_VECTOR, IPL4SOFT) IC7_IntHandler(void) { //po detekc
         }
         prvniPreruseniIC7 = 0; //shodim do 0 - uz mi bude chodit do elsu
     } else {
-        periodaTickPrenos = CasNew - CasOld; //pokud nemam prvni preruseni po stavu kdy se motor netocil tak normalne pocitam rozdil dob
+        periodaTickPrenos = CasNew - CasOld; //pokud nemam prvni preruseni po stavu kdy se motor netocil tak normalne pocitam rozdil dob - jelikoz mi to preteka zpet, tak ani kdyz mam dva casy blizko u sebe (nevejde se mi to do 32bitu) tak nemusim resit pretypovani na 64 bitu a pretece mi to zpet do 32 bitu (jinak bych resil ze pokud casNew> casOld tak jed normalne a v opacnem pripade bych odecetl casOld od maxima timeru a pricetl k tomu casNew)
     }
 
     //urceni smeru otaceni - hodnota 1 = kladny/-1 = zaporny
