@@ -13,6 +13,7 @@
 #include "./../header/platformDEP32mk.h"
 
 
+
 /* ************************************************************************** */
 /* ************************************************************************** */
 // Section: Local Functions                                                   */
@@ -120,21 +121,35 @@ void signalizaceLED(DETEKCE_HRANY *Ptr_hrana, int prepoctenyDekoder, ZATEZOVATEL
     }  
 }
 
-int getZatezovatel(ZATEZOVATEL *Ptr_zat, DETEKCE_HRANY *Ptr_hrana, bool *Ptr_prepinac){ //dostanu hodnotu zatezovatele na zaklade prepinace z S4 a RTM - na zaklade toho v jakem stavu mam prepinac, tak podle toho mi to vraci hodnotu zatezovatele pro PWM
-    if(*Ptr_prepinac == 1){ //rozhoduji se jaky zatezovatel budu vracet - pokud mam z komunikace 1 tak vracim zatezovatel z RTM
-    return Ptr_zat->zatKO;
+int getZatezovatel(ZATEZOVATEL *Ptr_zat, DETEKCE_HRANY *Ptr_hrana, bool *Ptr_prepinac, PRECH_CHAR *Ptr_PrechCharData){ //dostanu hodnotu zatezovatele na zaklade prepinace z S4 a RTM - na zaklade toho v jakem stavu mam prepinac, tak podle toho mi to vraci hodnotu zatezovatele pro PWM
+    if(Ptr_PrechCharData->runPrechChar == 1){ //rozhoduji se zda jsem dostal pokyn z RTM abych meril prechodovou charakteristiku, pokdu ano, tak do PWM posilam tuto hodnotu, jinak posilam ostatni hodnoty
+        return Ptr_PrechCharData->zetezovatelPrechChar;
     }
-    if(*Ptr_prepinac == 0){    //pokud mam z RTM 0, tak se ctu hodnotu bud z potaku nebo z dekoderu dle S4
-        if (Ptr_hrana ->hrana == 0){
-            return Ptr_zat->zatPO;
+    else{
+        if(*Ptr_prepinac == 1){ //rozhoduji se jaky zatezovatel budu vracet - pokud mam z komunikace 1 tak vracim zatezovatel z RTM
+        return Ptr_zat->zatKO;
         }
+        if(*Ptr_prepinac == 0){    //pokud mam z RTM 0, tak se ctu hodnotu bud z potaku nebo z dekoderu dle S4
+            if (Ptr_hrana ->hrana == 0){
+                return Ptr_zat->zatPO;
+            }
     
-         if (Ptr_hrana ->hrana == 1){
-            return Ptr_zat->zatRO;
-        }   
+            if (Ptr_hrana ->hrana == 1){
+                return Ptr_zat->zatRO;
+            }   
+        }
     }
-}//jeste doplnit rozhodovani na zaklade hodnoty z modulu
+}
 
+void runIRCneboPWM(DETEKCE_HRANY *Ptr_hrana){ //na zaklade stravu tlacitka S3 blikam led V3 a zaroven menim na pinu vystup PWM/IRC
+    if(Ptr_hrana->hrana == 0){
+        setTestPinIRCAasPwmOutput();//kontrola vystupu PWM 
+    }
+    else{
+        setTestPinIRCAasIrcOutput(); //kontrola vystupu IRC
+    }
+    setLedV3(Ptr_hrana->hrana);
+}
 
 /* *****************************************************************************
  End of File

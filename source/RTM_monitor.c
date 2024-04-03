@@ -7,7 +7,7 @@
 #include "./../header/platformDEP32mk.h"
 #include "./../header/pamet.h"
 #include "./../header/dekoder.h"
-#include "./../header/Caputre.h"
+//#include "./../header/Caputre.h"
 #include "./../header/protoypRTM.h"
 #include <xc.h>
 #include <sys/attribs.h>
@@ -34,17 +34,19 @@ void initPrepinacRTM(bool *Ptr_prepinac){
 *Ptr_prepinac =0;
 }
 
-void runKomunikaceRTM(ZATEZOVATEL *Ptr_zat, int zatezovatel, bool *Ptr_prepinac, CAPTURE_RTM *Ptr_CaptureRTM){
+void runKomunikaceRTM(ZATEZOVATEL *Ptr_zat, int zatezovatel, bool *Ptr_prepinac, CAPTURE_RTM *Ptr_CaptureRTM, PRECH_CHAR *Ptr_PrechCharData){
     //staticke promenne aby mi drzeli hodnotu pri dalsim volani fce - aby mi drzeli hodnotu celych 50ms
     static unsigned char citac50ms = 0; //citac musi byt static aby si pamatoval predchozi hodnotu
     static unsigned char citacCyklu = 0; //do teto promenne budu ukladat hodnoty 0 az 1 a podle toho budu odesilat do tableTerminalu/grafickeho Terminalu
+    static unsigned char ctr = 0; //pomoci teto hodnoty ctu hodnoty z pole
     static long ZatezovatelPrenos = 0; //sem budu ukladat data z RTM a z toho pak budu ukladat data do struktury
     static unsigned char delkaZpravy = 0; //seb budu ukladat delku zpravy
     static bool tmpPrepinacRTM =0; //pomocna promenna do ktere ukladam hodnotu z pointeru na globalni promennou
-    static bool komunikace = 0; //timto ovladam jestli zpravu prijimam nebo ne
+    static unsigned char komunikace = 0; //timto ovladam jestli zpravu prijimam nebo ne a zda merim prechodovou char
     static int otacky = 0; //do teto promenne budu ukladat hodnotu otacek ze struktury
     static int perioda = 0; //do teto promenne budu kladat hodnotu periody ze struktury
     static char smerOtaceni = 0; //do teto promenne budu ukladat informaci o smeru ze struktury
+    static int PrechChar = 0; //do teto promenne ukladam data prenosove char
     
     if (citac50ms ==COUNT_MAX){
         citac50ms = 0;
@@ -75,6 +77,13 @@ void runKomunikaceRTM(ZATEZOVATEL *Ptr_zat, int zatezovatel, bool *Ptr_prepinac,
                  }
                  Ptr_zat->zatKO = ZatezovatelPrenos; //ulozim do struktury hodnotu zatezovatele z monitoru 
              }
+            if((delkaZpravy == RTM_INT_DELKA_PRIJEM)&& (Command == 3)){ //pokud mam komunikaci z Command3 tak ukladam data z tohoto kanalu do prvku struktury
+                Ptr_PrechCharData->periodaVzorkovani = bytesToInteger(&prijmi[3]); //prijimam hodnotu periody se kteoru vzorkuji
+                Ptr_PrechCharData->zetezovatelPrechChar = bytesToInteger(&prijmi[5]); //prijimam hodnotu zatezovatele pro prechodovou charakteristiku
+                Ptr_PrechCharData->validDataPrechChar =1; //znaci mi ze mam nacteny data
+                Ptr_PrechCharData->runPrechChar=1; //znaci mi ze mam pozadavek na prechodovou charakteristiku
+                komunikace = 2;
+            }
         }
         
             
@@ -123,6 +132,28 @@ void runKomunikaceRTM(ZATEZOVATEL *Ptr_zat, int zatezovatel, bool *Ptr_prepinac,
                 }           
                 
             }
+        if(komunikace == 2){ //spoustim komunikaci, potom co mam nacteny data v poli a odesli==1 tak odesilam prechodovou charakteristiku do RTM
+            if (Ptr_PrechCharData->odesli==1){   
+                odesli[0] = 3; //odesle mi ze posilam jednu hodnotu (nastavuji prvni hodnotu pole) - v podmince pro komunikace == 1 mam delku pole 7 protoze odesilam 3 hodnoty, zde posilam jen jednu tak davam hodnotu 3
+                if (ctr <= 99){ //kazdych 50 ms budu odesilat jednu hodnotu z pole dokud neodeslu vsechny prvky pole (100 hodnot, kdy zacinam od 0)
+                    PrechChar = Ptr_PrechCharData->dataChar[ctr]; //ukladam si data ze struktury do pomocne promenne 
+                    integerToBytes(PrechChar, &odesli[1]); //odesilam data z prechodove charakteristiky
+                    sendMessageUSB(odesli, COM_GO); //odesilam hodnotu po komunikaci
+                    ctr++; //kazdych 50ms inkrementuji - uvaha opet jako v Prechod_char
+                }
+                if(ctr == 100){//pokud mam ctr == 99, ubehlo 99x50ms tedy se odeslali vsechny data z pole
+                    PrechChar = Ptr_PrechCharData->dataChar[ctr]; //ukladam si data ze struktury do pomocne promenne 
+                    integerToBytes(PrechChar, &odesli[1]); //odesilam data z prechodove charakteristiky
+                    sendMessageUSB(odesli, COM_GO); //odesilam hodnotu po komunikaci
+                    Ptr_PrechCharData->odeslano = 1; //signalizuje mi ze mam vse odeslano 
+                    Ptr_PrechCharData->odesli==0; //shazuji flag abych odesilal
+                    Ptr_PrechCharData->validDataPrechChar=0;
+                    ctr =0; //shazuji counter do 0 abych mohl cist dalsi prechodovou charakteristiku
+                    komunikace = 0;
+                }
+            }
+        }
+        
         
             
     }//konec ifu kde kontroluji stav citace

@@ -31,6 +31,7 @@
       <itemPath>source/RTM_monitor.c</itemPath>
       <itemPath>source/Hrad_pole.c</itemPath>
       <itemPath>source/Capture.c</itemPath>
+      <itemPath>source/Prechod_char.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"

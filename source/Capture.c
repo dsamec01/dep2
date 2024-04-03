@@ -116,6 +116,9 @@ void __ISR(_INPUT_CAPTURE_7_VECTOR, IPL4SOFT) IC7_IntHandler(void) { //po detekc
         while (IC7CONbits.ICBNE != 0) { //vycistim buffer - po tom co mam prvni preruseni tak vycistim buffer a jdu od znova 
             zahod = IC7BUF;
         }
+        if (IC7CONbits.ICBNE == 0){ //FIFO je First in First out - tzn. kdyz mam cisty buffer, vim ze tam prisla posledni hodnota a tedy si ji ulozim ze zahod do CasNew
+            CasNew = zahod;
+        }
         prvniPreruseniIC7 = 0; //shodim do 0 - uz mi bude chodit do elsu
     } else {
         periodaTickPrenos = CasNew - CasOld; //pokud nemam prvni preruseni po stavu kdy se motor netocil tak normalne pocitam rozdil dob - jelikoz mi to preteka zpet, tak ani kdyz mam dva casy blizko u sebe (nevejde se mi to do 32bitu) tak nemusim resit pretypovani na 64 bitu a pretece mi to zpet do 32 bitu (jinak bych resil ze pokud casNew> casOld tak jed normalne a v opacnem pripade bych odecetl casOld od maxima timeru a pricetl k tomu casNew)
