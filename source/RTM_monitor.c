@@ -135,19 +135,19 @@ void runKomunikaceRTM(ZATEZOVATEL *Ptr_zat, int zatezovatel, bool *Ptr_prepinac,
         if(komunikace == 2){ //spoustim komunikaci, potom co mam nacteny data v poli a odesli==1 tak odesilam prechodovou charakteristiku do RTM
             if (Ptr_PrechCharData->odesli==1){   
                 odesli[0] = 3; //odesle mi ze posilam jednu hodnotu (nastavuji prvni hodnotu pole) - v podmince pro komunikace == 1 mam delku pole 7 protoze odesilam 3 hodnoty, zde posilam jen jednu tak davam hodnotu 3
-                if (ctr <= 99){ //kazdych 50 ms budu odesilat jednu hodnotu z pole dokud neodeslu vsechny prvky pole (100 hodnot, kdy zacinam od 0)
+                if (ctr <= 99){ //kazdych 50 ms budu odesilat jednu hodnotu z pole dokud neodeslu vsechny prvky pole (101 hodnot, kdy zacinam od 0, tedy citam do 100)
                     PrechChar = Ptr_PrechCharData->dataChar[ctr]; //ukladam si data ze struktury do pomocne promenne 
                     integerToBytes(PrechChar, &odesli[1]); //odesilam data z prechodove charakteristiky
                     sendMessageUSB(odesli, COM_GO); //odesilam hodnotu po komunikaci
                     ctr++; //kazdych 50ms inkrementuji - uvaha opet jako v Prechod_char
                 }
-                if(ctr == 100){//pokud mam ctr == 99, ubehlo 99x50ms tedy se odeslali vsechny data z pole
+                if(ctr == 100){//pokud mam ctr == 100, ubehlo 100x50ms tedy se odeslali vsechny data z pole
                     PrechChar = Ptr_PrechCharData->dataChar[ctr]; //ukladam si data ze struktury do pomocne promenne 
                     integerToBytes(PrechChar, &odesli[1]); //odesilam data z prechodove charakteristiky
-                    sendMessageUSB(odesli, COM_GO); //odesilam hodnotu po komunikaci
+                    sendMessageUSB(odesli, COM_GO); //odesilam posledni hodnotu po komunikaci
                     Ptr_PrechCharData->odeslano = 1; //signalizuje mi ze mam vse odeslano 
-                    Ptr_PrechCharData->odesli==0; //shazuji flag abych odesilal
-                    Ptr_PrechCharData->validDataPrechChar=0;
+                    Ptr_PrechCharData->odesli=0; //shazuji flag abych odesilal
+                    Ptr_PrechCharData->validDataPrechChar=0; //uz nemam validni data a musim pockat na novy prikaz
                     ctr =0; //shazuji counter do 0 abych mohl cist dalsi prechodovou charakteristiku
                     komunikace = 0;
                 }

@@ -36,8 +36,8 @@ typedef struct{ //definuji si strukturu do ktere budu ukladat hodnotu zatezovate
     bool validDataPrechChar; //bude mi signalizovat zda mam nacteny data z RTM
     int dataChar[101]; //inicializace pole (musi mit 100 platnych vzorku)
     bool odesli; //bude mi signalizovat zda mam odesilat do RTM
-    bool odeslano;
-    bool runPrechChar;
+    bool odeslano; //bude mi signalizovat ze mam odeslano do RTM
+    bool runPrechChar; //signalizuji ze chci zatezovatel z RTM (Command3)
 }PRECH_CHAR;
 
 
