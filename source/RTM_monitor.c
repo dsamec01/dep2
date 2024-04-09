@@ -7,7 +7,7 @@
 #include "./../header/platformDEP32mk.h"
 #include "./../header/pamet.h"
 #include "./../header/dekoder.h"
-//#include "./../header/Caputre.h"
+//#include "./../header/Caputre.h" zahrnuto v pamet.h
 #include "./../header/protoypRTM.h"
 #include <xc.h>
 #include <sys/attribs.h>
@@ -82,7 +82,7 @@ void runKomunikaceRTM(ZATEZOVATEL *Ptr_zat, int zatezovatel, bool *Ptr_prepinac,
                 Ptr_PrechCharData->zetezovatelPrechChar = bytesToInteger(&prijmi[5]); //prijimam hodnotu zatezovatele pro prechodovou charakteristiku
                 Ptr_PrechCharData->validDataPrechChar =1; //znaci mi ze mam nacteny data
                 Ptr_PrechCharData->runPrechChar=1; //znaci mi ze mam pozadavek na prechodovou charakteristiku
-                komunikace = 2;
+                komunikace = 2; //po nacteni dat a nahozeni flagu se mi automaticky komunikace zapina
             }
         }
         
@@ -149,7 +149,7 @@ void runKomunikaceRTM(ZATEZOVATEL *Ptr_zat, int zatezovatel, bool *Ptr_prepinac,
                     Ptr_PrechCharData->odesli=0; //shazuji flag abych odesilal
                     Ptr_PrechCharData->validDataPrechChar=0; //uz nemam validni data a musim pockat na novy prikaz
                     ctr =0; //shazuji counter do 0 abych mohl cist dalsi prechodovou charakteristiku
-                    komunikace = 0;
+                    komunikace = 0; //jdu opet do komunikace 0 tzn. nevysilam
                 }
             }
         }

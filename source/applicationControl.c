@@ -26,7 +26,7 @@
 #include "./../header/PWM.h"
 #include "./../header/messengerDEP.h"
 #include "./../header/Hrad_pole.h"
-//#include "./../header/Caputre.h"
+//#include "./../header/Caputre.h" zahrnuto v pamet.h
 #include "./../header/protoypRTM.h"
 
 //-- platform Function prototypes are in "platrformDEP32mk" ---------------------
