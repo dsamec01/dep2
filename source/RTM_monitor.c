@@ -34,7 +34,7 @@ void initPrepinacRTM(bool *Ptr_prepinac){
 *Ptr_prepinac =0;
 }
 
-void runKomunikaceRTM(ZATEZOVATEL *Ptr_zat, int zatezovatel, bool *Ptr_prepinac, CAPTURE_RTM *Ptr_CaptureRTM, PRECH_CHAR *Ptr_PrechCharData){
+void runKomunikaceRTM(ZATEZOVATEL *Ptr_zat, int zatezovatel, bool *Ptr_prepinac, CAPTURE_RTM *Ptr_CaptureRTM, PRECH_CHAR *Ptr_PrechCharData, REGULATOR *Ptr_reg){
     //staticke promenne aby mi drzeli hodnotu pri dalsim volani fce - aby mi drzeli hodnotu celych 50ms
     static unsigned char citac50ms = 0; //citac musi byt static aby si pamatoval predchozi hodnotu
     static unsigned char citacCyklu = 0; //do teto promenne budu ukladat hodnoty 0 az 1 a podle toho budu odesilat do tableTerminalu/grafickeho Terminalu
@@ -47,6 +47,7 @@ void runKomunikaceRTM(ZATEZOVATEL *Ptr_zat, int zatezovatel, bool *Ptr_prepinac,
     static int perioda = 0; //do teto promenne budu kladat hodnotu periody ze struktury
     static char smerOtaceni = 0; //do teto promenne budu ukladat informaci o smeru ze struktury
     static int PrechChar = 0; //do teto promenne ukladam data prenosove char
+    static unsigned char Stav_Menice;
     
     if (citac50ms ==COUNT_MAX){
         citac50ms = 0;
@@ -54,10 +55,12 @@ void runKomunikaceRTM(ZATEZOVATEL *Ptr_zat, int zatezovatel, bool *Ptr_prepinac,
             delkaZpravy = prijmi[0]; //ukladam nultou hodnotu pole, ktera mi urcuje delku zpravy - podle toho urcim zda mam int nebo ne
             Command = bytesToInteger(&prijmi[1]); //zjistuje mi jakej prijimam kanal
             if((delkaZpravy == RTM_INT_DELKA_PRIJEM)&& (Command == 0)){
-                komunikace = 0; //pokud prijde hodnota z kanalu 0 zastavuji komunikaci (nevysilam)
+                komunikace = 0; //pokud prijde hodnota z kanalu 0 zastavuji komunikaci (nevysilam) a vypinam menic
             } 
             if((delkaZpravy == RTM_INT_DELKA_PRIJEM)&& (Command == 1)){
-                komunikace = 1; //pokud mi prijde zprava z kanalu 1, tak spoustim komunikaci
+                if(Ptr_reg->reg_rdy ==0 && Ptr_PrechCharData->validDataPrechChar ==0){
+                komunikace = 1; //pokud mi prijde zprava z kanalu 1, tak spoustim komunikaci. Musim mit ale zaroven vyplou regulaci
+                }
             } 
             if((delkaZpravy == RTM_INT_DELKA_PRIJEM)&& (Command == 2)){ //pokud je delka 7, tak pouzivam int, pokud je to pak vetsi tak je to float, tzn. ja chci pouzivat jen pro int - diky teto podmince musim komunikovat prostrednictvim toho kanalu ktery se rovna Command (volim si z jakeho kanalu chci prijimat)
                  
@@ -80,14 +83,37 @@ void runKomunikaceRTM(ZATEZOVATEL *Ptr_zat, int zatezovatel, bool *Ptr_prepinac,
             if((delkaZpravy == RTM_INT_DELKA_PRIJEM)&& (Command == 3)){ //pokud mam komunikaci z Command3 tak ukladam data z tohoto kanalu do prvku struktury
                 Ptr_PrechCharData->periodaVzorkovani = bytesToInteger(&prijmi[3]); //prijimam hodnotu periody se kteoru vzorkuji
                 Ptr_PrechCharData->zetezovatelPrechChar = bytesToInteger(&prijmi[5]); //prijimam hodnotu zatezovatele pro prechodovou charakteristiku
+                Ptr_reg->reg_rdy=0; //musim si vypnout regulaci abych nemel konflikt u PWM
                 Ptr_PrechCharData->validDataPrechChar =1; //znaci mi ze mam nacteny data
                 Ptr_PrechCharData->runPrechChar=1; //znaci mi ze mam pozadavek na prechodovou charakteristiku
                 komunikace = 2; //po nacteni dat a nahozeni flagu se mi automaticky komunikace zapina
             }
+            if((delkaZpravy == RTM_INT_DELKA_PRIJEM)&& (Command == 4)){
+                komunikace = 3; //budu spoustet menic
+            }
+            if((delkaZpravy == RTM_INT_DELKA_PRIJEM)&& (Command == 5)){
+                if(Ptr_reg->menic_nastaven ==1){
+                    Ptr_reg->Zad_otacky = bytesToInteger(&prijmi[3]); //prijimam zadnou hodnotu otacek
+                    Ptr_reg->Otacky_zadany=1;
+                }
+            }
+            if((delkaZpravy == RTM_INT_DELKA_PRIJEM)&& (Command == 6)){
+                if(Ptr_reg->Otacky_zadany==1){
+                    Ptr_reg->K_P = bytesToInteger(&prijmi[3]); //prijimam hodnotu KP
+                    Ptr_reg->K_I = bytesToInteger(&prijmi[5]); //prijimam hodnotu KI
+                    Ptr_reg->reg_rdy=1; //zapinam regulaci
+                    komunikace = 4;
+                }
+            }
         }
-        
+            if(komunikace == 0){//vypinam menic, zastavuji regulaci a odesilani do RTM
+                Ptr_reg->reg_rdy=0;
+                setDisableConverter();
+                Ptr_reg->menic_nastaven=0;
+                Ptr_reg->Otacky_zadany=0;
+            }
             
-            if(komunikace == 1) { //pokud mam v komunikaci 1 tak odesilam jinak se nic nevykonava
+            if(komunikace == 1) { //pokud mam v komunikaci 1 tak odesilam 
                 //nyni odesilam na RTM nezavisle na tom jestli dostanu zpravu
                 switch(citacCyklu){
                     case 0: {//odesilani do grafiky
@@ -153,9 +179,43 @@ void runKomunikaceRTM(ZATEZOVATEL *Ptr_zat, int zatezovatel, bool *Ptr_prepinac,
                 }
             }
         }
+        if (komunikace == 3){ //nastavuji menic
+            switch(Stav_Menice){
+                case 0: { //disable menice provadim pokud menic neni nastaven
+                    if(Ptr_reg->menic_nastaven==0){
+                        setDisableConverter();
+                        Stav_Menice =1;
+                    }
+                break;
+                }
+                
+                case 1: { //reset menice a jdu dal
+                    setConverterError(true);
+                    setConverterUlegErrorFlag(false);
+                    setConverterVlegErrorFlag(false);
+                    setConverterError(false);
+                    Stav_Menice = 2;
+                break;
+                }
         
+                case 2: { //zapinam menic a jdu dal
+                    Ptr_reg->menic_nastaven=1; //pokud mam nastaven menic mohu prijmout hodnoty
+                    setEnableConverter();
+                    Stav_Menice = 0;
+                    break;
+                }
+            }
+        }
         
-            
+        if(komunikace == 4){//odesilam zadanou a skutecnou hodnotu do RTM
+            odesli[0] = RTM_DELKA_ODESLI;
+            otacky = Ptr_CaptureRTM -> otacky;
+            integerToBytes(otacky, &odesli[1]);
+            integerToBytes(Ptr_reg->Zad_otacky, &odesli[3]);
+            integerToBytes(Ptr_reg->reg_ochylka, &odesli[5]);
+            sendMessageUSB(odesli, COM_GO); //odesilam hodnotu po komunikaci
+        }
+        
     }//konec ifu kde kontroluji stav citace
     
     else{

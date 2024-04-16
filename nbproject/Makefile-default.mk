@@ -57,17 +57,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=source/applicationControl.c source/platformMainMK.c source/filtrace.c source/dekoder.c source/pamet.c source/PWM.c source/RTM_monitor.c source/Hrad_pole.c source/Capture.c source/Prechod_char.c
+SOURCEFILES_QUOTED_IF_SPACED=source/applicationControl.c source/platformMainMK.c source/filtrace.c source/dekoder.c source/pamet.c source/PWM.c source/RTM_monitor.c source/Hrad_pole.c source/Capture.c source/Prechod_char.c source/regulator.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/source/applicationControl.o ${OBJECTDIR}/source/platformMainMK.o ${OBJECTDIR}/source/filtrace.o ${OBJECTDIR}/source/dekoder.o ${OBJECTDIR}/source/pamet.o ${OBJECTDIR}/source/PWM.o ${OBJECTDIR}/source/RTM_monitor.o ${OBJECTDIR}/source/Hrad_pole.o ${OBJECTDIR}/source/Capture.o ${OBJECTDIR}/source/Prechod_char.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/source/applicationControl.o.d ${OBJECTDIR}/source/platformMainMK.o.d ${OBJECTDIR}/source/filtrace.o.d ${OBJECTDIR}/source/dekoder.o.d ${OBJECTDIR}/source/pamet.o.d ${OBJECTDIR}/source/PWM.o.d ${OBJECTDIR}/source/RTM_monitor.o.d ${OBJECTDIR}/source/Hrad_pole.o.d ${OBJECTDIR}/source/Capture.o.d ${OBJECTDIR}/source/Prechod_char.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/source/applicationControl.o ${OBJECTDIR}/source/platformMainMK.o ${OBJECTDIR}/source/filtrace.o ${OBJECTDIR}/source/dekoder.o ${OBJECTDIR}/source/pamet.o ${OBJECTDIR}/source/PWM.o ${OBJECTDIR}/source/RTM_monitor.o ${OBJECTDIR}/source/Hrad_pole.o ${OBJECTDIR}/source/Capture.o ${OBJECTDIR}/source/Prechod_char.o ${OBJECTDIR}/source/regulator.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/source/applicationControl.o.d ${OBJECTDIR}/source/platformMainMK.o.d ${OBJECTDIR}/source/filtrace.o.d ${OBJECTDIR}/source/dekoder.o.d ${OBJECTDIR}/source/pamet.o.d ${OBJECTDIR}/source/PWM.o.d ${OBJECTDIR}/source/RTM_monitor.o.d ${OBJECTDIR}/source/Hrad_pole.o.d ${OBJECTDIR}/source/Capture.o.d ${OBJECTDIR}/source/Prechod_char.o.d ${OBJECTDIR}/source/regulator.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/source/applicationControl.o ${OBJECTDIR}/source/platformMainMK.o ${OBJECTDIR}/source/filtrace.o ${OBJECTDIR}/source/dekoder.o ${OBJECTDIR}/source/pamet.o ${OBJECTDIR}/source/PWM.o ${OBJECTDIR}/source/RTM_monitor.o ${OBJECTDIR}/source/Hrad_pole.o ${OBJECTDIR}/source/Capture.o ${OBJECTDIR}/source/Prechod_char.o
+OBJECTFILES=${OBJECTDIR}/source/applicationControl.o ${OBJECTDIR}/source/platformMainMK.o ${OBJECTDIR}/source/filtrace.o ${OBJECTDIR}/source/dekoder.o ${OBJECTDIR}/source/pamet.o ${OBJECTDIR}/source/PWM.o ${OBJECTDIR}/source/RTM_monitor.o ${OBJECTDIR}/source/Hrad_pole.o ${OBJECTDIR}/source/Capture.o ${OBJECTDIR}/source/Prechod_char.o ${OBJECTDIR}/source/regulator.o
 
 # Source Files
-SOURCEFILES=source/applicationControl.c source/platformMainMK.c source/filtrace.c source/dekoder.c source/pamet.c source/PWM.c source/RTM_monitor.c source/Hrad_pole.c source/Capture.c source/Prechod_char.c
+SOURCEFILES=source/applicationControl.c source/platformMainMK.c source/filtrace.c source/dekoder.c source/pamet.c source/PWM.c source/RTM_monitor.c source/Hrad_pole.c source/Capture.c source/Prechod_char.c source/regulator.c
 
 
 CFLAGS=
@@ -166,6 +166,12 @@ ${OBJECTDIR}/source/Prechod_char.o: source/Prechod_char.c  nbproject/Makefile-${
 	@${RM} ${OBJECTDIR}/source/Prechod_char.o 
 	@${FIXDEPS} "${OBJECTDIR}/source/Prechod_char.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/source/Prechod_char.o.d" -o ${OBJECTDIR}/source/Prechod_char.o source/Prechod_char.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD) 
 	
+${OBJECTDIR}/source/regulator.o: source/regulator.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/source" 
+	@${RM} ${OBJECTDIR}/source/regulator.o.d 
+	@${RM} ${OBJECTDIR}/source/regulator.o 
+	@${FIXDEPS} "${OBJECTDIR}/source/regulator.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_ICD3=1  -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/source/regulator.o.d" -o ${OBJECTDIR}/source/regulator.o source/regulator.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD) 
+	
 else
 ${OBJECTDIR}/source/applicationControl.o: source/applicationControl.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/source" 
@@ -226,6 +232,12 @@ ${OBJECTDIR}/source/Prechod_char.o: source/Prechod_char.c  nbproject/Makefile-${
 	@${RM} ${OBJECTDIR}/source/Prechod_char.o.d 
 	@${RM} ${OBJECTDIR}/source/Prechod_char.o 
 	@${FIXDEPS} "${OBJECTDIR}/source/Prechod_char.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/source/Prechod_char.o.d" -o ${OBJECTDIR}/source/Prechod_char.o source/Prechod_char.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD) 
+	
+${OBJECTDIR}/source/regulator.o: source/regulator.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/source" 
+	@${RM} ${OBJECTDIR}/source/regulator.o.d 
+	@${RM} ${OBJECTDIR}/source/regulator.o 
+	@${FIXDEPS} "${OBJECTDIR}/source/regulator.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/source/regulator.o.d" -o ${OBJECTDIR}/source/regulator.o source/regulator.c    -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD) 
 	
 endif
 

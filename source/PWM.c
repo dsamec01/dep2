@@ -7,10 +7,10 @@
 /* Section: Included Files                                                    */
 /* ************************************************************************** */
 /* ************************************************************************** */
-#include "./../header/PWM.h"
 #include <xc.h>
 #include <sys/attribs.h>
 #include "./../header/pamet.h"
+#include "./../header/PWM.h"
 #include "./../header/platformDEP32mk.h"
 
 /* ************************************************************************** */
@@ -72,13 +72,22 @@ int* getPtrCasJednaPrenos(){ //predam pointer na int
     return &casJednaPrenos; //pokud budu chtit v Application control predat, tak si zavolam funkci a ta mi vrati pointer na int, tedy mi vrati vlastne adresu
 } //pracuji s tim jako s pointerem, je to pointer, kdyz to budu predavat funkci, tak musi cekat pointer, ne hdonotu
 
-void runPWMPrepoctiAPredej(int zatezovatel){
+void runPWMPrepoctiAPredej(int zatezovatel, REGULATOR *Ptr_reg){
     long casJedna = 0; //dekalruji a inicializuji pomocnou promennou
-    casJedna = (PERIOD_MIN - PERIOD_PUL)*zatezovatel; //prepocitam na tiky kdy ma byt v 1
-    casJedna=casJedna/ZAT_MIN+PERIOD_PUL; //stale prepocet
-    IEC0CLR = _IEC0_T4IE_MASK; //zakazu Interrupt
-    casJednaPrenos = casJedna; //predam do globalni promenne
-    IEC0SET = _IEC0_T4IE_MASK; //povolim Interrupt
+    if(Ptr_reg->menic_nastaven == 0){ //pokud nemam hodnoty pro regulaci nastaveny, tak beru jako vychozi hodnoty zatezovatele - musim resit uz kdyz mam menic nastavenej, jinak by se mi to roztocilo na zaklade hodnoty z analogu
+        casJedna = (PERIOD_MIN - PERIOD_PUL)*zatezovatel; //prepocitam na tiky kdy ma byt v 1
+        casJedna=casJedna/ZAT_MIN+PERIOD_PUL; //stale prepocet
+        IEC0CLR = _IEC0_T4IE_MASK; //zakazu Interrupt
+        casJednaPrenos = casJedna; //predam do globalni promenne
+        IEC0SET = _IEC0_T4IE_MASK; //povolim Interrupt
+    }
+    else{//pokud mam hodnoty pro regulaci nastaveny, tak beru pro PWM jako vychozi hodnoty z regulace 
+        casJedna = (PERIOD_MIN - PERIOD_PUL)*Ptr_reg->hodnota_pro_PWM; //prepocitam na tiky kdy ma byt v 1
+        casJedna=casJedna/ZAT_MIN+PERIOD_PUL; //stale prepocet
+        IEC0CLR = _IEC0_T4IE_MASK; //zakazu Interrupt
+        casJednaPrenos = casJedna; //predam do globalni promenne
+        IEC0SET = _IEC0_T4IE_MASK; //povolim Interrupt
+    }
 }
 
 

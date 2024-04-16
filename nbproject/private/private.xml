@@ -4,9 +4,10 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/samec/Documents/MPLAB/dep/dep.X/source/RTM_monitor.c</file>
-            <file>file:/C:/Users/samec/Documents/MPLAB/dep/dep.X/source/pamet.c</file>
+            <file>file:/C:/Users/samec/Documents/MPLAB/dep/dep.X/source/PWM.c</file>
             <file>file:/C:/Users/samec/Documents/MPLAB/dep/dep.X/source/applicationControl.c</file>
-            <file>file:/C:/Users/samec/Documents/MPLAB/dep/dep.X/source/Prechod_char.c</file>
+            <file>file:/C:/Users/samec/Documents/MPLAB/dep/dep.X/header/pamet.h</file>
+            <file>file:/C:/Users/samec/Documents/MPLAB/dep/dep.X/source/regulator.c</file>
         </group>
     </open-files>
 </project-private>
