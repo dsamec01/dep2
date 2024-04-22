@@ -6,7 +6,7 @@
 #include "Caputre.h"
 #define OMEZENI_ADC 1950 //kvuli šumu musim mit na potaku mensi hodnotu nez 2047 -> musim jakoby doraz posunout
 #define PREPOCET_ADC 2047 //pomoci OMEZENI_ADC a PREPOCTU_ADC dostanu hodnoty z rozsahu -2047 az 2047
-#define PREPOCET_NA_MS 1000 //pomoci teto promenne prepocitavam konstanty regulatoru na milisekundy ----kdyztak kdyby delalo zuby tak zvetsit na 1000000, pak bude v mikro, Kp je timto pouze prenasobena (nemusim diky tomu delat float mode)
+#define PREPOCET_NA_FLOAT 1000.0 //pomoci teto promenne prepocitavam konstanty regulatoru na milisekundy ----kdyztak kdyby delalo zuby tak zvetsit na 1000000, pak bude v mikro, Kp je timto pouze prenasobena (nemusim diky tomu delat float mode)
 /* ************************************************************************** */
     /* ************************************************************************** */
     /* Section: Constants                                                         */
@@ -31,7 +31,7 @@ typedef struct{ //definuji si strukturu do ktere budu ukladat zatezovatele z dek
 
 //definice k Prechodove charakteristice
 typedef struct{ //definuji si strukturu do ktere budu ukladat hodnotu zatezovatele z RTM a periodu vzorkovani
-    unsigned int zetezovatelPrechChar; //zatezovatel pro prechodovou charakteristiku
+    int zetezovatelPrechChar; //zatezovatel pro prechodovou charakteristiku
     unsigned char periodaVzorkovani; //zadana perioda vzorkovani z RTM
     bool validDataPrechChar; //bude mi signalizovat zda mam nacteny data z RTM
     int dataChar[101]; //inicializace pole (musi mit 100 platnych vzorku)
@@ -43,15 +43,14 @@ typedef struct{ //definuji si strukturu do ktere budu ukladat hodnotu zatezovate
 //definice k regulatoru
 typedef struct{
     //hodnoty zadavane z RTM
-    unsigned int K_P; //proporcialni konstanta
-    unsigned int K_I; //integracni konstanta
-    unsigned int K_T; //sledovací konstanta
-    int Zad_otacky; //zadana hodnota otacek
+    float K_P; //proporcialni konstanta
+    float K_I; //integracni konstanta
+    float K_T; //sledovací konstanta
+    float Zad_otacky; //zadana hodnota otacek
     //hodnota pro PWM
     int hodnota_pro_PWM; //vysledna hodnota zatezovatele kterou poslu PWM
     int reg_ochylka;
     //flagy
-    bool Otacky_zadany;
     bool menic_nastaven;
     bool reg_rdy;
 }REGULATOR;
@@ -71,7 +70,7 @@ void runPrechodChar(PRECH_CHAR *Ptr_PrechCharData, CAPTURE_RTM *Ptr_CaptureRTM);
 
 //prototypy k regulatorum
 void initRegulator(REGULATOR *Ptr_reg);
-void runRegulatorOtacek(REGULATOR *Ptr_reg, CAPTURE_RTM *Ptr_CaptureRTM);
+void runRegulatorOtacek(REGULATOR *Ptr_reg, CAPTURE_RTM *Ptr_CaptureRTM, int zatezovatel);
 
     
 

@@ -18,7 +18,7 @@
 /* Section: File Scope or Global Data                                         */
 /* ************************************************************************** */
 /* ************************************************************************** */
-int casJednaPrenos = 0; //mam globalni promennou, do ktere zapisuji pocet casu, kdy mam mit pulz v 1
+int casJednaPrenos = 3000; //mam globalni promennou, do ktere zapisuji pocet tiku, kdy mam mit pulz v 1 - musi byt na zacatku roven stride 50% tedy 3000
 
 /* ************************************************************************** */
 /* ************************************************************************** */
@@ -72,18 +72,20 @@ int* getPtrCasJednaPrenos(){ //predam pointer na int
     return &casJednaPrenos; //pokud budu chtit v Application control predat, tak si zavolam funkci a ta mi vrati pointer na int, tedy mi vrati vlastne adresu
 } //pracuji s tim jako s pointerem, je to pointer, kdyz to budu predavat funkci, tak musi cekat pointer, ne hdonotu
 
-void runPWMPrepoctiAPredej(int zatezovatel, REGULATOR *Ptr_reg){
+void runPWMPrepoctiAPredej(int zatezovatel, REGULATOR *Ptr_reg, PRECH_CHAR *Ptr_PrechCharData){
     long casJedna = 0; //dekalruji a inicializuji pomocnou promennou
-    if(Ptr_reg->menic_nastaven == 0){ //pokud nemam hodnoty pro regulaci nastaveny, tak beru jako vychozi hodnoty zatezovatele - musim resit uz kdyz mam menic nastavenej, jinak by se mi to roztocilo na zaklade hodnoty z analogu
+    if(Ptr_PrechCharData->runPrechChar == 1){ //pokud nemam hodnoty pro regulaci nastaveny, tak beru jako vychozi hodnoty zatezovatele - musim resit uz kdyz mam menic nastavenej, jinak by se mi to roztocilo na zaklade hodnoty z analogu
         casJedna = (PERIOD_MIN - PERIOD_PUL)*zatezovatel; //prepocitam na tiky kdy ma byt v 1
-        casJedna=casJedna/ZAT_MIN+PERIOD_PUL; //stale prepocet
+        casJedna=casJedna/ZAT_MIN;
+        casJedna=casJedna+PERIOD_PUL; //stale prepocet
         IEC0CLR = _IEC0_T4IE_MASK; //zakazu Interrupt
         casJednaPrenos = casJedna; //predam do globalni promenne
         IEC0SET = _IEC0_T4IE_MASK; //povolim Interrupt
     }
     else{//pokud mam hodnoty pro regulaci nastaveny, tak beru pro PWM jako vychozi hodnoty z regulace 
         casJedna = (PERIOD_MIN - PERIOD_PUL)*Ptr_reg->hodnota_pro_PWM; //prepocitam na tiky kdy ma byt v 1
-        casJedna=casJedna/ZAT_MIN+PERIOD_PUL; //stale prepocet
+        casJedna=casJedna/ZAT_MIN;
+        casJedna=casJedna+PERIOD_PUL; //stale prepocet
         IEC0CLR = _IEC0_T4IE_MASK; //zakazu Interrupt
         casJednaPrenos = casJedna; //predam do globalni promenne
         IEC0SET = _IEC0_T4IE_MASK; //povolim Interrupt

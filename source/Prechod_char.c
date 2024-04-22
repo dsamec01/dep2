@@ -42,7 +42,6 @@ void runPrechodChar(PRECH_CHAR *Ptr_PrechCharData, CAPTURE_RTM *Ptr_CaptureRTM){
     static unsigned char ctr = 1; //chci aby ctr sel az od 1 nebot do 0 prvku zapisuji nejakou random vysokou hodnotu abych vedel odkud prechodovou char merim
     switch(stav){
         case 0: { //disable menice a kontrola zda mam nacteny hodnoty pro periodu a zatezovatel, jdu dal
-            setDisableConverter();
             if(Ptr_PrechCharData->validDataPrechChar ==1){
                 stav =1;
             }
@@ -89,6 +88,7 @@ void runPrechodChar(PRECH_CHAR *Ptr_PrechCharData, CAPTURE_RTM *Ptr_CaptureRTM){
         case 4: {
             if (Ptr_PrechCharData->odeslano==1){ //pokud dostanu informaci z RTM ze mam odeslano, tak jdu do stavu 0 a shazuji flagy - ve stavu 0 vypnu menic a cekam na dalsi prikaz
                 Ptr_PrechCharData->odeslano=0;
+                setDisableConverter();
                 stav = 0; //pokud mam odeslano jdu do satvu 0  a muzu jet znova
             }
             else{

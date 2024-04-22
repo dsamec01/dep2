@@ -33,7 +33,7 @@
     // *****************************************************************************
 //prototypy funkci
 void initPWM(void);
-void runPWMPrepoctiAPredej(int zatezovatel, REGULATOR *Ptr_reg);
+void runPWMPrepoctiAPredej(int zatezovatel, REGULATOR *Ptr_reg, PRECH_CHAR *Ptr_PrechCharData);
 int* getPtrCasJednaPrenos();
 
 

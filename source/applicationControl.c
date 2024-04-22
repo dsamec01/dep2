@@ -120,7 +120,7 @@ void runApplication(void) {//je volanou kazdou 1ms v platformMainMK sem pisu moj
   signalizaceLED(&pametS4, getPrepocetDekoderu(&vystupDekoderu), &zat);//siganlizace led, funkce rozsvici ledky na zaklade nacteni dekoderu nebo potaku
   
  //volani funkci pro PWM
- runPWMPrepoctiAPredej(getZatezovatel(&zat, &pametS4, &prepinac_RTM, &PrechCharData), &regOtacek); //do funkce poslu hodnotu zatezovatele na zaklade prepinace
+ runPWMPrepoctiAPredej(getZatezovatel(&zat, &pametS4, &prepinac_RTM, &PrechCharData), &regOtacek, &PrechCharData); //do funkce poslu hodnotu zatezovatele na zaklade prepinace
  
   
  //volani funkci pro tlacitko S5
@@ -144,11 +144,11 @@ void runApplication(void) {//je volanou kazdou 1ms v platformMainMK sem pisu moj
  //volani funkce pro chod prechodove charakteristiky
  runPrechodChar(&PrechCharData, &captureRTM);
  
- //volani funkce regulatoru
- runRegulatorOtacek(&regOtacek, &captureRTM);
+ //volani funkce regulatoru a nastavovani menice
+ runRegulatorOtacek(&regOtacek, &captureRTM, getZatezovatel(&zat, &pametS4, &prepinac_RTM, &PrechCharData));
  
  //RTM monitor
- runKomunikaceRTM(&zat, getZatezovatel(&zat, &pametS4, &prepinac_RTM,&PrechCharData), &prepinac_RTM, &captureRTM, &PrechCharData, &regOtacek); //do funkce poslu strukturu se zatezovatelema do ktery budu ukladat, zaroven tam poslu hodnotu vysledneho zatezovatele ktery budu odesilat a posilam tam hodnotu do ktere budu cist v jake fazi je prepinac u RTM
+ runKomunikaceRTM(&zat, getZatezovatel(&zat, &pametS4, &prepinac_RTM,&PrechCharData), &prepinac_RTM, &captureRTM, &PrechCharData, &regOtacek, getPametTlacitkaOutput(&pametS5)); //do funkce poslu strukturu se zatezovatelema do ktery budu ukladat, zaroven tam poslu hodnotu vysledneho zatezovatele ktery budu odesilat a posilam tam hodnotu do ktere budu cist v jake fazi je prepinac u RTM
  
 }// runApplication() END)
 
