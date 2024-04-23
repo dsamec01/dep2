@@ -5,8 +5,9 @@
 #include <stdbool.h>
 #include "Caputre.h"
 #define OMEZENI_ADC 1950 //kvuli šumu musim mit na potaku mensi hodnotu nez 2047 -> musim jakoby doraz posunout
-#define PREPOCET_ADC 2047 //pomoci OMEZENI_ADC a PREPOCTU_ADC dostanu hodnoty z rozsahu -2047 az 2047
+#define PREPOCET_ADC 3000 //pomoci OMEZENI_ADC a PREPOCTU_ADC dostanu hodnoty z rozsahu -3000 az 3000 - to odpovida zadane hodnote otacek pri regulaci
 #define PREPOCET_NA_FLOAT 1000.0 //pomoci teto promenne prepocitavam konstanty regulatoru na milisekundy ----kdyztak kdyby delalo zuby tak zvetsit na 1000000, pak bude v mikro, Kp je timto pouze prenasobena (nemusim diky tomu delat float mode)
+#define OMEZENI_ZATEZOVATELE 2047 //pomoci teto hodnoty omezuji hodnotu zatezovatele pro prechodovou charakteristiku
 /* ************************************************************************** */
     /* ************************************************************************** */
     /* Section: Constants                                                         */
@@ -46,7 +47,7 @@ typedef struct{
     float K_P; //proporcialni konstanta
     float K_I; //integracni konstanta
     float K_T; //sledovací konstanta
-    float Zad_otacky; //zadana hodnota otacek
+    int Zad_otacky; //zadana hodnota otacek
     //hodnota pro PWM
     int hodnota_pro_PWM; //vysledna hodnota zatezovatele kterou poslu PWM
     int reg_ochylka;

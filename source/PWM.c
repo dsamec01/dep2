@@ -73,7 +73,7 @@ int* getPtrCasJednaPrenos(){ //predam pointer na int
 } //pracuji s tim jako s pointerem, je to pointer, kdyz to budu predavat funkci, tak musi cekat pointer, ne hdonotu
 
 void runPWMPrepoctiAPredej(int zatezovatel, REGULATOR *Ptr_reg, PRECH_CHAR *Ptr_PrechCharData){
-    long casJedna = 0; //dekalruji a inicializuji pomocnou promennou
+    int casJedna = 0; //dekalruji a inicializuji pomocnou promennou
     if(Ptr_PrechCharData->runPrechChar == 1){ //pokud nemam hodnoty pro regulaci nastaveny, tak beru jako vychozi hodnoty zatezovatele - musim resit uz kdyz mam menic nastavenej, jinak by se mi to roztocilo na zaklade hodnoty z analogu
         casJedna = (PERIOD_MIN - PERIOD_PUL)*zatezovatel; //prepocitam na tiky kdy ma byt v 1
         casJedna=casJedna/ZAT_MIN;

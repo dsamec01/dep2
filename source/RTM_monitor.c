@@ -66,7 +66,7 @@ void runKomunikaceRTM(ZATEZOVATEL *Ptr_zat, int zatezovatel, bool *Ptr_prepinac,
                  *Ptr_prepinac = bytesToInteger(&prijmi[3]); //odpovida prvnimu parametru, kdy na zaklade teto hodnoty prepinam jestli chci zatezovatel z RTM nebo ne (ukladam prvni parametr pole)
                  ZatezovatelPrenos = bytesToInteger(&prijmi[5]); //pomoci teto hodnoty urcuji velikost zatezovatele (ukladam 2. parametr z pole)
                  
-                 //nyni ifama omezuji hodnotu aby byla v rozsahu -2047 az 2047
+                 //nyni ifama omezuji hodnotu aby byla v rozsahu -3000 az 3000, coz odpovida rozsahu zadanych otacek
                  if (ZatezovatelPrenos > OMEZENI){
                     ZatezovatelPrenos = OMEZENI;
                  }
@@ -82,18 +82,18 @@ void runKomunikaceRTM(ZATEZOVATEL *Ptr_zat, int zatezovatel, bool *Ptr_prepinac,
                     Ptr_PrechCharData->periodaVzorkovani = bytesToInteger(&prijmi[3]); //prijimam hodnotu periody se kteoru vzorkuji
                     Ptr_PrechCharData->zetezovatelPrechChar = bytesToInteger(&prijmi[5]); //prijimam hodnotu zatezovatele pro prechodovou charakteristiku
                     //omezuji hodnotu zadavanou z RTM
-                    if(Ptr_PrechCharData->zetezovatelPrechChar > OMEZENI){
-                        Ptr_PrechCharData->zetezovatelPrechChar = 2047;
+                    if(Ptr_PrechCharData->zetezovatelPrechChar > OMEZENI_ZATEZOVATELE){
+                        Ptr_PrechCharData->zetezovatelPrechChar = OMEZENI_ZATEZOVATELE;
                     }
-                    if (Ptr_PrechCharData->zetezovatelPrechChar < -OMEZENI){
-                        Ptr_PrechCharData->zetezovatelPrechChar = -2047;
+                    if (Ptr_PrechCharData->zetezovatelPrechChar < -OMEZENI_ZATEZOVATELE){
+                        Ptr_PrechCharData->zetezovatelPrechChar = -OMEZENI_ZATEZOVATELE;
                     }
                     Ptr_PrechCharData->validDataPrechChar =1; //znaci mi ze mam nacteny data
                     Ptr_PrechCharData->runPrechChar=1; //znaci mi ze mam pozadavek na prechodovou charakteristiku
                     komunikace = 2; //po nacteni dat a nahozeni flagu se mi automaticky komunikace zapina
             }
             if((delkaZpravy == RTM_INT_DELKA_PRIJEM)&& (Command == 4)&& (MUX == 0)){
-                komunikace = 3;    //budu spoustet menic             
+                komunikace = 3;    //budu spoustet menic   
             }
             
             if((delkaZpravy == RTM_INT_DELKA_PRIJEM)&& (Command == 5)&& (Ptr_reg->menic_nastaven==1)){
@@ -117,6 +117,7 @@ void runKomunikaceRTM(ZATEZOVATEL *Ptr_zat, int zatezovatel, bool *Ptr_prepinac,
                 Ptr_PrechCharData->runPrechChar=0;
                 Ptr_PrechCharData->odesli=0;
                 Ptr_PrechCharData->validDataPrechChar=0; //uz nemam validni data a musim pockat na novy prikaz
+                //nemusim mit flag ze mam odeslano = 1, protoze menic vypinam i zde (pokud odeslano == 1 tak nedelam nic jineho nez ze vypinam menic a pak bych ho navic musel znovu shodit do 0)
             }
         
             if(komunikace == 1) { //pokud mam v komunikaci 1 tak odesilam 
@@ -129,7 +130,6 @@ void runKomunikaceRTM(ZATEZOVATEL *Ptr_zat, int zatezovatel, bool *Ptr_prepinac,
                         integerToBytes(zatezovatel, &odesli[3]); //odesilam jakou mam hodnotu zatezovatele, ktery mi vratil return ze struktury
                         otacky = Ptr_CaptureRTM -> otacky;
                         smerOtaceni = Ptr_CaptureRTM -> smerOtaceni;
-                        otacky = otacky*smerOtaceni; //az tohle povolim tak vymazat smerOtaceni z case2
                         integerToBytes(otacky, &odesli[5]);
                         sendMessageUSB(odesli, COM_GO); //odesilam hodnotu po komunikaci 
                         citacCyklu = 1;
@@ -215,7 +215,7 @@ void runKomunikaceRTM(ZATEZOVATEL *Ptr_zat, int zatezovatel, bool *Ptr_prepinac,
         }
         
         if(komunikace == 4){//odesilam zadanou a skutecnou hodnotu do RTM
-            odesli[0] = RTM_DELKA_ODESLI;
+            odesli[0] = 9;
             otacky = Ptr_CaptureRTM->otacky;
             integerToBytes(otacky, &odesli[1]);
             integerToBytes(Ptr_reg->Zad_otacky, &odesli[3]);

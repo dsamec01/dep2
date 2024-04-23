@@ -108,14 +108,14 @@ void signalizaceLED(DETEKCE_HRANY *Ptr_hrana, int prepoctenyDekoder, ZATEZOVATEL
     if (Ptr_hrana ->hrana == 1){//na zaklade stavu prepinace, pokud je v 1 tak ctu z potenciometru
         int potenciometrValue = getPotentiometerValue(); //ulozim si hodnotu z potenciometru do pomocne promenne
         setLedV4(0);
-        if (potenciometrValue  > OMEZENI_ADC) { //pokud mam o neco vetsi nez je 2047 tak to oriznu
+        if (potenciometrValue  > OMEZENI_ADC) { //pokud mam o neco vetsi nez je 1950 tak to oriznu
         potenciometrValue  = OMEZENI_ADC; 
         } 
-        if (potenciometrValue < -OMEZENI_ADC) { //pokud mam o neco mensi nez 2047, tak to oriznu
+        if (potenciometrValue < -OMEZENI_ADC) { //pokud mam o neco mensi nez 1950, tak to oriznu
         potenciometrValue  = -OMEZENI_ADC;
         }
-        potenciometrValue = potenciometrValue*PREPOCET_ADC; //hodnotu z rozmezi 1960 si vynasobim 2047
-        potenciometrValue = potenciometrValue/OMEZENI_ADC; //hodnotu nyni podelim 1960 abych byl opet v rozsahu 2047
+        potenciometrValue = potenciometrValue*PREPOCET_ADC; //hodnotu z rozmezi 1960 si vynasobim 3000
+        potenciometrValue = potenciometrValue/OMEZENI_ADC; //hodnotu nyni podelim 1960 abych byl opet v rozsahu 3000
         setFpgaVxValue(potenciometrValue); //vyslednou hodnotu si rozsvitim LED
         Ptr_zat->zatRO=potenciometrValue; //a zaroven si ji ulozim do struktury
     }  
@@ -123,11 +123,11 @@ void signalizaceLED(DETEKCE_HRANY *Ptr_hrana, int prepoctenyDekoder, ZATEZOVATEL
 
 int getZatezovatel(ZATEZOVATEL *Ptr_zat, DETEKCE_HRANY *Ptr_hrana, bool *Ptr_prepinac, PRECH_CHAR *Ptr_PrechCharData){ //dostanu hodnotu zatezovatele na zaklade prepinace z S4 a RTM - na zaklade toho v jakem stavu mam prepinac, tak podle toho mi to vraci hodnotu zatezovatele pro PWM
     if(Ptr_PrechCharData->runPrechChar == 1){ //rozhoduji se zda jsem dostal pokyn z RTM abych meril prechodovou charakteristiku, pokdu ano, tak do PWM posilam tuto hodnotu, jinak posilam ostatni hodnoty
-        return Ptr_PrechCharData->zetezovatelPrechChar;
+        return Ptr_PrechCharData->zetezovatelPrechChar; //v 5. uloze ma charakter zatezovatel
     }
     else{
         if(*Ptr_prepinac == 1){ //rozhoduji se jaky zatezovatel budu vracet - pokud mam z komunikace 1 tak vracim zatezovatel z RTM
-        return Ptr_zat->zatKO;
+        return Ptr_zat->zatKO; //zatKO, zatPO, zatRO maji v 5. uloze charakter otacek
         }
         if(*Ptr_prepinac == 0){    //pokud mam z RTM 0, tak se ctu hodnotu bud z potaku nebo z dekoderu dle S4
             if (Ptr_hrana ->hrana == 0){

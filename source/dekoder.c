@@ -171,15 +171,15 @@ int getPrepocetDekoderu(DEKODER *Ptr_dekoder) { //vezmu hodnotu z rozmezi -127 a
     long prepocet =0;
     prepocet= Ptr_dekoder->hodNatoc; 
     prepocet = prepocet * OMEZENI; //vezmu hodnotu z dekoderu, prenasobim to konstantou, mam nejake velke cislo 
-    prepocet = prepocet/DEKODER_MAX; //podelim zpet abych byl v rozmezi 2047
-        if (prepocet > OMEZENI) { //pokud mam o neco vetsi nez je 2047 tak to oriznu
+    prepocet = prepocet/DEKODER_MAX; //podelim zpet abych byl v rozmezi 3000
+        if (prepocet > OMEZENI) { //pokud mam o neco vetsi nez je 3000 tak to oriznu
             prepocet = OMEZENI;
         } 
-        if (prepocet < -OMEZENI) { //pokud mam o neco mensi nez 2047, tak to oriznu
+        if (prepocet < -OMEZENI) { //pokud mam o neco mensi nez 3000, tak to oriznu
             prepocet = -OMEZENI;
         }
     int tmpPrepocet = prepocet;
-    return tmpPrepocet; //vraci mi to hodnotu v rozsahu -2047 az 2047
+    return tmpPrepocet; //vraci mi to hodnotu v rozsahu -3000 az 3000
 }
 
 

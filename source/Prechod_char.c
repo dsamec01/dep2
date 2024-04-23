@@ -73,7 +73,7 @@ void runPrechodChar(PRECH_CHAR *Ptr_PrechCharData, CAPTURE_RTM *Ptr_CaptureRTM){
                     ctr++; //citam do pole, chci zapisovat vzdy s prichodem dalsi periody (ctr inkrementuji az nakonci kdy mam hodnotu zapsanou)
                     stav = 3; //zustavam v tomto stavu
                 }
-                if(ctr == 100){ //pokud mam 100 tak zapisu posledni hodnotu a odesilam data, shazuji flagy a jdu do stavu 4
+                if(ctr == 100 && perioda == Ptr_PrechCharData->periodaVzorkovani){ //pokud mam 100 tak zapisu posledni hodnotu a odesilam data, shazuji flagy a jdu do stavu 4
                     Ptr_PrechCharData->dataChar[ctr] = Ptr_CaptureRTM->otacky; //ulozim si 100 prvek do pole (mam pole o 101 prvcich, kdy citam od 0, tzn. muzu citat az do 100)
                     Ptr_PrechCharData->odesli=1; //davam flag ze mohu odesilat do RTM
                     Ptr_PrechCharData->runPrechChar=0; //zastavuji odesilani zatezovatele z RTM z Commandu 3 (Z tohoto commandu nastavuji zatezovatel pro prechodovku)

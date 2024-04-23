@@ -176,7 +176,7 @@ void runVypocetOtacekASmeru(CAPTURE_RTM *Ptr_CaptureRTM) {
         Ptr_CaptureRTM->perioda = tmpPeriodaTick / 60; //tim dostavam hodnotu mezi pulzy v us
         if (tmpPeriodaTick != 0) { //osetrim pred delenim nulou
             tmpOtacky = OTACKY_PREPOC / tmpPeriodaTick; //pri prepoctu na sekundy tiky podelim 60 Mhz, cimz dostanu hodnotu v sekundach, hodnotu tiku vynasobim 500, coz je rozliseni inkrementalniho cidla (500 im/ot) - udelam prevracenou hodnotu, mam frekvenci a tu vynasobim 60
-            Ptr_CaptureRTM->otacky = tmpOtacky; //predam si to do globalni promenne, kterou poslu do RTM
+            Ptr_CaptureRTM->otacky = tmpOtacky*tmpSmerOtaceni; //predam si to do globalni promenne, kterou poslu do RTM
         }
         Ptr_CaptureRTM->smerOtaceni = tmpSmerOtaceni; //predavam si do globalni promenne, kterou poslu do RTM
     }
