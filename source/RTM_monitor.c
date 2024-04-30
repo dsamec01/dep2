@@ -34,7 +34,7 @@ void initPrepinacRTM(bool *Ptr_prepinac){
 *Ptr_prepinac =0;
 }
 
-void runKomunikaceRTM(ZATEZOVATEL *Ptr_zat, int zatezovatel, bool *Ptr_prepinac, CAPTURE_RTM *Ptr_CaptureRTM, PRECH_CHAR *Ptr_PrechCharData, REGULATOR *Ptr_reg, bool MUX){
+void runKomunikaceRTM(ZATEZOVATEL *Ptr_zat, int zatezovatel, bool *Ptr_prepinac, CAPTURE_RTM *Ptr_CaptureRTM, PRECH_CHAR *Ptr_PrechCharData, REGULATOR *Ptr_reg, bool MUX, bool tlacitkoS5MUX){
     //staticke promenne aby mi drzeli hodnotu pri dalsim volani fce - aby mi drzeli hodnotu celych 50ms
     static unsigned char citac50ms = 0; //citac musi byt static aby si pamatoval predchozi hodnotu
     static unsigned char citacCyklu = 0; //do teto promenne budu ukladat hodnoty 0 az 1 a podle toho budu odesilat do tableTerminalu/grafickeho Terminalu
@@ -102,7 +102,7 @@ void runKomunikaceRTM(ZATEZOVATEL *Ptr_zat, int zatezovatel, bool *Ptr_prepinac,
                 komunikace = 3;    //budu spoustet menic   
             }
             
-            if((delkaZpravy == RTM_INT_DELKA_PRIJEM)&& (Command == 5)&& (Ptr_reg->menic_nastaven==1)&& (MUX == 0)){ //konstanty mohu menit i za chodu
+            if((delkaZpravy == RTM_INT_DELKA_PRIJEM)&& (Command == 5)&& (Ptr_reg->menic_nastaven==1)){ //konstanty mohu menit i za chodu
                     Ptr_reg->K_P = bytesToInteger(&prijmi[3]); //prijimam hodnotu KP
                     //Ptr_reg->K_I = bytesToInteger(&prijmi[5]); //prijimam hodnotu KI
                     
@@ -116,7 +116,10 @@ void runKomunikaceRTM(ZATEZOVATEL *Ptr_zat, int zatezovatel, bool *Ptr_prepinac,
                     komunikace = 4;
             }
         }
-        
+            if(tlacitkoS5MUX == 1){ //pokud zmacknu MUX a prepnu na simulator, tak zastavuji regulaci a vypinam menic a vse resetuji. Ceka na CMD1
+                komunikace = 0;
+            }
+
             if(komunikace == 0){//vypinam menic, zastavuji regulaci a odesilani do RTM
                 Ptr_reg->reg_rdy=0;
                 setDisableConverter();
@@ -127,49 +130,50 @@ void runKomunikaceRTM(ZATEZOVATEL *Ptr_zat, int zatezovatel, bool *Ptr_prepinac,
                 //nemusim mit flag ze mam odeslano = 1, protoze menic vypinam i zde (pokud odeslano == 1 tak nedelam nic jineho nez ze vypinam menic a pak bych ho navic musel znovu shodit do 0)
             }
         
-            if(komunikace == 1) { //pokud mam v komunikaci 1 tak odesilam 
                 //nyni odesilam na RTM nezavisle na tom jestli dostanu zpravu
-                switch(citacCyklu){
-                    case 0: {//odesilani do grafiky
-                        odesli[0] = RTM_DELKA_ODESLI; //odesle mi ze posilam dve hodnoty (nastavuji prvni hodnotu pole)
-                        tmpPrepinacRTM = *Ptr_prepinac;//ulozim si ukazatel do pomocne promenne, kterouu pak odeslu
-                        integerToBytes(tmpPrepinacRTM, &odesli[1]); //odesilam v jakem stavu mam prepinac RTM
-                        //integerToBytes(zatezovatel, &odesli[3]); //odesilam jakou mam hodnotu zatezovatele, ktery mi vratil return ze struktury
-                        otacky = Ptr_CaptureRTM -> otacky;
-                        smerOtaceni = Ptr_CaptureRTM -> smerOtaceni;
-                        integerToBytes(otacky, &odesli[5]);
-                        sendMessageUSB(odesli, COM_GO); //odesilam hodnotu po komunikaci 
-                        citacCyklu = 1;
-                    break;
-                    }
+                if(komunikace ==1){
+                    switch(citacCyklu){
+                        case 0: {//odesilani do grafiky
+                            odesli[0] = RTM_DELKA_ODESLI; //odesle mi ze posilam dve hodnoty (nastavuji prvni hodnotu pole)
+                            tmpPrepinacRTM = *Ptr_prepinac;//ulozim si ukazatel do pomocne promenne, kterouu pak odeslu
+                            integerToBytes(tmpPrepinacRTM, &odesli[1]); //odesilam v jakem stavu mam prepinac RTM
+                            //integerToBytes(zatezovatel, &odesli[3]); //odesilam jakou mam hodnotu zatezovatele, ktery mi vratil return ze struktury
+                            otacky = Ptr_CaptureRTM -> otacky;
+                            smerOtaceni = Ptr_CaptureRTM -> smerOtaceni;
+                            integerToBytes(otacky, &odesli[5]);
+                            sendMessageUSB(odesli, COM_GO); //odesilam hodnotu po komunikaci 
+                            citacCyklu = 1;
+                        break;
+                        }
                     
-                    case 1: {//odesilani do TableTerminalu - musim po jedne hodnote
-                        perioda = Ptr_CaptureRTM -> perioda;
-                        char per[40]; //zakladam pole charu pro periodu
-                        sprintf(per, "perioda = %4d [us]", perioda); //prevadi mi to na string, ktery budu vysilat to TableTerminalu
-                        sendTableTerminalMessageUSB("1A", per);
-                        citacCyklu = 2;
-                    break;
-                    }
+                        case 1: {//odesilani do TableTerminalu - musim po jedne hodnote
+                            perioda = Ptr_CaptureRTM -> perioda;
+                            char per[40]; //zakladam pole charu pro periodu
+                            sprintf(per, "perioda = %4d [us]", perioda); //prevadi mi to na string, ktery budu vysilat to TableTerminalu
+                            sendTableTerminalMessageUSB("1A", per);
+                            citacCyklu = 2;
+                        break;
+                        }
+                        
+                        case 2: {//odesilani do TableTerminalu
+                            //smerOtaceni = Ptr_CaptureRTM -> smerOtaceni;
+                            char sm[40];//zakladam pole charu pro smer
+                            sprintf(sm, "smer otaceni je %4d", smerOtaceni);//prevadi mi to na string, ktery budu vysilat to TableTerminalu
+                            sendTableTerminalMessageUSB("2A", sm);
+                            citacCyklu = 3;
+                        break;
+                        }
                     
-                    case 2: {//odesilani do TableTerminalu
-                        //smerOtaceni = Ptr_CaptureRTM -> smerOtaceni;
-                        char sm[40];//zakladam pole charu pro smer
-                        sprintf(sm, "smer otaceni je %4d", smerOtaceni);//prevadi mi to na string, ktery budu vysilat to TableTerminalu
-                        sendTableTerminalMessageUSB("2A", sm);
-                        citacCyklu = 3;
-                    break;
-                    }
-                    
-                    case 3: {//odesilani do TableTerminalu
-                        char ot[40];//zakladam pole charu pro smer
-                        sprintf(ot, "otacky = %4d [ot/min]", otacky);//prevadi mi to na string, ktery budu vysilat to TableTerminalu
-                        sendTableTerminalMessageUSB("3A", ot);
-                        citacCyklu = 0;
-                    break;
-                    }
-                }           
-            }
+                        case 3: {//odesilani do TableTerminalu
+                            char ot[40];//zakladam pole charu pro smer
+                            sprintf(ot, "otacky = %4d [ot/min]", otacky);//prevadi mi to na string, ktery budu vysilat to TableTerminalu
+                            sendTableTerminalMessageUSB("3A", ot);
+                            citacCyklu = 0;
+                        break;
+                        }
+                    }              
+                }
+            
         
         if(komunikace == 2){ //spoustim komunikaci, potom co mam nacteny data v poli a odesli==1 tak odesilam prechodovou charakteristiku do RTM
             if (Ptr_PrechCharData->odesli==1){   

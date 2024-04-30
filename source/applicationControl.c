@@ -148,7 +148,7 @@ void runApplication(void) {//je volanou kazdou 1ms v platformMainMK sem pisu moj
  runRegulatorOtacek(&regOtacek, &captureRTM, getZatezovatel(&zat, &pametS4, &prepinac_RTM, &PrechCharData));
  
  //RTM monitor
- runKomunikaceRTM(&zat, getZatezovatel(&zat, &pametS4, &prepinac_RTM,&PrechCharData), &prepinac_RTM, &captureRTM, &PrechCharData, &regOtacek, getPametTlacitkaOutput(&pametS5)); //do funkce poslu strukturu se zatezovatelema do ktery budu ukladat, zaroven tam poslu hodnotu vysledneho zatezovatele ktery budu odesilat a posilam tam hodnotu do ktere budu cist v jake fazi je prepinac u RTM
+ runKomunikaceRTM(&zat, getZatezovatel(&zat, &pametS4, &prepinac_RTM,&PrechCharData), &prepinac_RTM, &captureRTM, &PrechCharData, &regOtacek, getPametTlacitkaOutput(&pametS5), getFiltrOutput(&tlacitkoS5)); //do funkce poslu strukturu se zatezovatelema do ktery budu ukladat, zaroven tam poslu hodnotu vysledneho zatezovatele ktery budu odesilat a posilam tam hodnotu do ktere budu cist v jake fazi je prepinac u RTM
  
 }// runApplication() END)
 
