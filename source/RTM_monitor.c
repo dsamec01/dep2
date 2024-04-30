@@ -102,7 +102,7 @@ void runKomunikaceRTM(ZATEZOVATEL *Ptr_zat, int zatezovatel, bool *Ptr_prepinac,
                 komunikace = 3;    //budu spoustet menic   
             }
             
-            if((delkaZpravy == RTM_INT_DELKA_PRIJEM)&& (Command == 5)&& (Ptr_reg->menic_nastaven==1)){ //konstanty mohu menit i za chodu
+            if((delkaZpravy == RTM_INT_DELKA_PRIJEM)&& (Command == 5)&& (Ptr_reg->menic_nastaven==1)&& (MUX == 0)){ //konstanty mohu menit i za chodu
                     Ptr_reg->K_P = bytesToInteger(&prijmi[3]); //prijimam hodnotu KP
                     //Ptr_reg->K_I = bytesToInteger(&prijmi[5]); //prijimam hodnotu KI
                     
