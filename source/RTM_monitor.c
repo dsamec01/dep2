@@ -78,15 +78,21 @@ void runKomunikaceRTM(ZATEZOVATEL *Ptr_zat, int zatezovatel, bool *Ptr_prepinac,
                  }
                  Ptr_zat->zatKO = ZatezovatelPrenos; //ulozim do struktury hodnotu zatezovatele z monitoru 
              }
-            if((delkaZpravy == RTM_INT_DELKA_PRIJEM)&& (Command == 3) && (MUX == 0)){ //pokud mam komunikaci z Command3 tak ukladam data z tohoto kanalu do prvku struktury
+            if((delkaZpravy == RTM_INT_DELKA_PRIJEM)&& (Command == 3) && (MUX == 0) && (Ptr_reg->reg_rdy==0)){ //pokud mam komunikaci z Command3 tak ukladam data z tohoto kanalu do prvku struktury - musim mit zaroven vyplou regulaci a MUX
                     Ptr_PrechCharData->periodaVzorkovani = bytesToInteger(&prijmi[3]); //prijimam hodnotu periody se kteoru vzorkuji
                     Ptr_PrechCharData->zetezovatelPrechChar = bytesToInteger(&prijmi[5]); //prijimam hodnotu zatezovatele pro prechodovou charakteristiku
-                    //omezuji hodnotu zadavanou z RTM
+                    //omezuji hodnoty zadavane z RTM
                     if(Ptr_PrechCharData->zetezovatelPrechChar > OMEZENI_ZATEZOVATELE){
                         Ptr_PrechCharData->zetezovatelPrechChar = OMEZENI_ZATEZOVATELE;
                     }
                     if (Ptr_PrechCharData->zetezovatelPrechChar < -OMEZENI_ZATEZOVATELE){
                         Ptr_PrechCharData->zetezovatelPrechChar = -OMEZENI_ZATEZOVATELE;
+                    }
+                    if(Ptr_PrechCharData->periodaVzorkovani < 0){
+                        Ptr_PrechCharData->periodaVzorkovani = 0;
+                    }
+                    if (Ptr_PrechCharData->periodaVzorkovani > 5){
+                        Ptr_PrechCharData->periodaVzorkovani = 5;
                     }
                     Ptr_PrechCharData->validDataPrechChar =1; //znaci mi ze mam nacteny data
                     Ptr_PrechCharData->runPrechChar=1; //znaci mi ze mam pozadavek na prechodovou charakteristiku
@@ -96,13 +102,14 @@ void runKomunikaceRTM(ZATEZOVATEL *Ptr_zat, int zatezovatel, bool *Ptr_prepinac,
                 komunikace = 3;    //budu spoustet menic   
             }
             
-            if((delkaZpravy == RTM_INT_DELKA_PRIJEM)&& (Command == 5)&& (Ptr_reg->menic_nastaven==1)){
+            if((delkaZpravy == RTM_INT_DELKA_PRIJEM)&& (Command == 5)&& (Ptr_reg->menic_nastaven==1)){ //konstanty mohu menit i za chodu
                     Ptr_reg->K_P = bytesToInteger(&prijmi[3]); //prijimam hodnotu KP
-                    Ptr_reg->K_I = bytesToInteger(&prijmi[5]); //prijimam hodnotu KI
+                    //Ptr_reg->K_I = bytesToInteger(&prijmi[5]); //prijimam hodnotu KI
                     
                      //prepocet konstant regulatoru na 1000x mensi
                     Ptr_reg->K_P = Ptr_reg->K_P/PREPOCET_NA_FLOAT;
-                    Ptr_reg->K_I = Ptr_reg->K_I/PREPOCET_NA_FLOAT;
+                    //Ptr_reg->K_I = Ptr_reg->K_I/PREPOCET_NA_FLOAT;
+                    Ptr_reg->K_I = Ptr_reg->K_P/Ptr_reg->Tau; //pote kdyz znam Tau ktere si urcim na zaklade meho pomeru K_P a K_I tak vypocitavam K_I na na zaklade K_P ktere zadam do RTM
                     Ptr_reg->K_T = Ptr_reg->K_I; //K_T nastavuji na K_I
                     
                     Ptr_reg->reg_rdy=1; //zapinam regulaci
@@ -127,7 +134,7 @@ void runKomunikaceRTM(ZATEZOVATEL *Ptr_zat, int zatezovatel, bool *Ptr_prepinac,
                         odesli[0] = RTM_DELKA_ODESLI; //odesle mi ze posilam dve hodnoty (nastavuji prvni hodnotu pole)
                         tmpPrepinacRTM = *Ptr_prepinac;//ulozim si ukazatel do pomocne promenne, kterouu pak odeslu
                         integerToBytes(tmpPrepinacRTM, &odesli[1]); //odesilam v jakem stavu mam prepinac RTM
-                        integerToBytes(zatezovatel, &odesli[3]); //odesilam jakou mam hodnotu zatezovatele, ktery mi vratil return ze struktury
+                        //integerToBytes(zatezovatel, &odesli[3]); //odesilam jakou mam hodnotu zatezovatele, ktery mi vratil return ze struktury
                         otacky = Ptr_CaptureRTM -> otacky;
                         smerOtaceni = Ptr_CaptureRTM -> smerOtaceni;
                         integerToBytes(otacky, &odesli[5]);
@@ -215,7 +222,7 @@ void runKomunikaceRTM(ZATEZOVATEL *Ptr_zat, int zatezovatel, bool *Ptr_prepinac,
         }
         
         if(komunikace == 4){//odesilam zadanou a skutecnou hodnotu do RTM
-            odesli[0] = 9;
+            odesli[0] = RTM_DELKA_ODESLI;
             otacky = Ptr_CaptureRTM->otacky;
             integerToBytes(otacky, &odesli[1]);
             integerToBytes(Ptr_reg->Zad_otacky, &odesli[3]);

@@ -47,6 +47,7 @@ typedef struct{
     float K_P; //proporcialni konstanta
     float K_I; //integracni konstanta
     float K_T; //sledovací konstanta
+    float Tau; //pomer K_P a K_I
     int Zad_otacky; //zadana hodnota otacek
     //hodnota pro PWM
     int hodnota_pro_PWM; //vysledna hodnota zatezovatele kterou poslu PWM

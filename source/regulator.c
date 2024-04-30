@@ -17,9 +17,10 @@
 /* ************************************************************************** */
 /* ************************************************************************** */
 void initRegulator(REGULATOR *Ptr_reg) {
-    Ptr_reg->K_I = 47; 
-    Ptr_reg->K_P = 4800; 
+    Ptr_reg->K_I = 0; 
+    Ptr_reg->K_P = 0; 
     Ptr_reg->K_T = 0; 
+    Ptr_reg->Tau = 50;
     Ptr_reg->Zad_otacky=0; 
     Ptr_reg->hodnota_pro_PWM = 0;
     Ptr_reg->menic_nastaven=0;
